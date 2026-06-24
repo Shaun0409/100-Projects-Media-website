@@ -6,7 +6,7 @@
 :root {
     --red: #E31E24;
     --red-dark: #C41A1F;
-    --red-glow: rgba(227, 30, 36, 0.1);
+    --red-glow: rgba(227, 30, 36, 0.08);
     --white: #FFFFFF;
     --warm-white: #FDFBF7;
     --gray-light: #F5F3EF;
@@ -15,10 +15,10 @@
     --text-primary: #1A1A1A;
     --text-secondary: #4A4A4A;
     --text-muted: #8A8A8A;
-    --shadow-sm: 0 4px 20px rgba(0, 0, 0, 0.03);
-    --shadow-md: 0 8px 40px rgba(0, 0, 0, 0.05);
-    --shadow-lg: 0 16px 56px rgba(0, 0, 0, 0.08);
-    --shadow-red: 0 4px 28px rgba(227, 30, 36, 0.12);
+    --shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.03);
+    --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.05);
+    --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.08);
+    --shadow-red: 0 4px 24px rgba(227, 30, 36, 0.12);
     --radius: 16px;
     --radius-sm: 10px;
     --transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -935,21 +935,11 @@ section {
     max-height: 50px;
     max-width: 120px;
     object-fit: contain;
-    filter: grayscale(0%);
-    transition: filter 0.3s ease;
-}
-
-.partner-logo-item:hover img {
-    filter: grayscale(0%);
 }
 
 @keyframes scrollPartnerLogos {
-    0% {
-        transform: translateX(0);
-    }
-    100% {
-        transform: translateX(-50%);
-    }
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
 }
 
 /* ==========================================
@@ -1350,7 +1340,7 @@ section {
    PRINT
    ========================================== */
 @media print {
-    .navbar, .nav-toggle, .hero-scroll, .post-modal, #postIdTool, .post-id-toast {
+    .navbar, .nav-toggle, .hero-scroll, .post-modal, #postIdTool {
         display: none !important;
     }
     body {

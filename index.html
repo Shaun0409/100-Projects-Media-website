@@ -31,7 +31,7 @@
                     <a href="#feed">Media</a>
                     <a href="#community">Community</a>
                     <a href="#partners">Partners</a>
-                    <a href="#work">Work With Us</a>
+                    <a href="#work">Work</a>
                     <a href="#team">Team</a>
                     <a href="#contact">Contact</a>
                 </div>
@@ -250,7 +250,9 @@
             <div class="work-content">
                 <p class="work-text">Whether you're launching a campaign, publishing a story, producing an event or looking for cultural insight, 100 Hub can help you.</p>
                 <div class="work-actions">
-                    <a href="#" class="btn-primary">Request Media Kit</a>
+                    <a href="#" class="btn-primary" id="mediaKitBtn">
+                        <i class="fa-regular fa-file-pdf"></i> Request Media Kit
+                    </a>
                     <a href="#" class="btn-secondary">Start Partnership</a>
                 </div>
                 <div class="work-contact">
@@ -636,7 +638,7 @@
                 `;
             }).join('');
             
-            // Click any post to open modal (clicking anywhere on the post)
+            // Click ANYWHERE on the post to open modal
             document.querySelectorAll('.feed-item').forEach(item => {
                 item.addEventListener('click', function(e) {
                     // If the click is on the "Read Full Story" button, let the button handle it
@@ -690,11 +692,10 @@
                 return;
             }
 
-            // Double the logos for seamless infinite scroll
             const logos = [...partnerLogos, ...partnerLogos];
             track.innerHTML = logos.map(logo => `
                 <div class="partner-logo-item">
-                    <img src="${logo.url}" alt="${logo.name}" title="${logo.name}" />
+                    <img src="${logo.url}" alt="${logo.name}" title="${logo.name}" onerror="this.style.display='none'" />
                 </div>
             `).join('');
         }
@@ -809,6 +810,31 @@
         modalOverlay.addEventListener('click', closeModal);
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') closeModal();
+        });
+
+        // ==========================================
+        // MEDIA KIT DOWNLOAD
+        // ==========================================
+        document.getElementById('mediaKitBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            const pdfUrl = '/media-kit.pdf';
+            
+            fetch(pdfUrl, { method: 'HEAD' })
+                .then(response => {
+                    if (response.ok) {
+                        const link = document.createElement('a');
+                        link.href = pdfUrl;
+                        link.download = '100_HUB_Media_Kit.pdf';
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    } else {
+                        alert('📄 Media Kit coming soon. Please check back later.');
+                    }
+                })
+                .catch(() => {
+                    alert('📄 Media Kit coming soon. Please check back later.');
+                });
         });
 
         // ==========================================

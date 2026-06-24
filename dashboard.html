@@ -10,13 +10,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     <link rel="stylesheet" href="style.css" />
     <style>
-        /* Dashboard specific styles */
         .dashboard-layout {
             padding-top: 100px;
             min-height: 100vh;
             background: var(--warm-white);
         }
-
         .dashboard-header {
             display: flex;
             justify-content: space-between;
@@ -25,24 +23,18 @@
             gap: 20px;
             margin-bottom: 32px;
         }
-
         .dashboard-title {
             font-family: 'Playfair Display', serif;
             font-size: 36px;
             font-weight: 600;
             color: var(--text-primary);
         }
-
-        .dashboard-title span {
-            color: var(--red);
-        }
-
+        .dashboard-title span { color: var(--red); }
         .dashboard-stats {
             display: flex;
             gap: 24px;
             flex-wrap: wrap;
         }
-
         .stat-card {
             background: var(--white);
             border: 1px solid var(--gray-medium);
@@ -51,7 +43,6 @@
             text-align: center;
             min-width: 100px;
         }
-
         .stat-card .number {
             font-family: 'Playfair Display', serif;
             font-size: 32px;
@@ -59,14 +50,12 @@
             color: var(--red);
             display: block;
         }
-
         .stat-card .label {
             font-size: 11px;
             text-transform: uppercase;
             letter-spacing: 1px;
             color: var(--text-muted);
         }
-
         .dashboard-tabs {
             display: flex;
             gap: 4px;
@@ -77,7 +66,6 @@
             padding: 4px;
             overflow-x: auto;
         }
-
         .dashboard-tabs button {
             padding: 10px 24px;
             border: none;
@@ -90,31 +78,21 @@
             color: var(--text-secondary);
             white-space: nowrap;
         }
-
         .dashboard-tabs button.active {
             background: var(--red);
             color: var(--white);
         }
-
         .dashboard-tabs button:hover:not(.active) {
             background: var(--gray-light);
         }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
         .dashboard-actions {
             display: flex;
             gap: 12px;
             flex-wrap: wrap;
             margin-bottom: 24px;
         }
-
         .btn-outline {
             padding: 10px 20px;
             background: transparent;
@@ -130,17 +108,14 @@
             gap: 8px;
             text-decoration: none;
         }
-
         .btn-outline:hover {
             border-color: var(--red);
             color: var(--red);
         }
-
         .btn-outline.danger:hover {
             border-color: #ff4444;
             color: #ff4444;
         }
-
         .table-wrap {
             background: var(--white);
             border: 1px solid var(--gray-medium);
@@ -148,19 +123,16 @@
             overflow: hidden;
             overflow-x: auto;
         }
-
         table {
             width: 100%;
             border-collapse: collapse;
             font-size: 14px;
             min-width: 600px;
         }
-
         thead {
             background: var(--gray-light);
             border-bottom: 1px solid var(--gray-medium);
         }
-
         th {
             text-align: left;
             padding: 14px 20px;
@@ -170,17 +142,12 @@
             color: var(--text-muted);
             font-weight: 500;
         }
-
         td {
             padding: 14px 20px;
             border-bottom: 1px solid var(--gray-medium);
             color: var(--text-secondary);
         }
-
-        tr:hover td {
-            background: var(--gray-light);
-        }
-
+        tr:hover td { background: var(--gray-light); }
         .member-role {
             display: inline-block;
             padding: 2px 12px;
@@ -190,7 +157,6 @@
             background: rgba(227, 30, 36, 0.08);
             color: var(--red);
         }
-
         .delete-btn {
             background: none;
             border: none;
@@ -200,32 +166,26 @@
             padding: 4px 8px;
             border-radius: 4px;
         }
-
         .delete-btn:hover {
             color: #ff4444;
             background: rgba(255, 68, 68, 0.08);
         }
-
         .empty-state {
             text-align: center;
             padding: 60px 20px;
             color: var(--text-muted);
         }
-
         .empty-state i {
             font-size: 48px;
             margin-bottom: 16px;
             opacity: 0.3;
         }
-
-        /* Partner Grid */
         .partner-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             gap: 16px;
             margin-bottom: 24px;
         }
-
         .partner-card {
             background: var(--white);
             border: 1px solid var(--gray-medium);
@@ -234,19 +194,16 @@
             text-align: center;
             position: relative;
         }
-
         .partner-card img {
             max-height: 50px;
             max-width: 100%;
             object-fit: contain;
         }
-
         .partner-card .partner-name {
             font-size: 12px;
             color: var(--text-muted);
             margin-top: 8px;
         }
-
         .partner-card .remove-partner {
             position: absolute;
             top: 8px;
@@ -258,11 +215,7 @@
             font-size: 14px;
             transition: var(--transition-fast);
         }
-
-        .partner-card .remove-partner:hover {
-            color: #ff4444;
-        }
-
+        .partner-card .remove-partner:hover { color: #ff4444; }
         .add-partner-form {
             display: flex;
             gap: 12px;
@@ -273,7 +226,6 @@
             border: 1px solid var(--gray-medium);
             border-radius: var(--radius-sm);
         }
-
         .add-partner-form input {
             flex: 1;
             padding: 10px 16px;
@@ -282,14 +234,66 @@
             font-size: 14px;
             min-width: 150px;
         }
-
         .add-partner-form input:focus {
             outline: none;
             border-color: var(--red);
         }
+        .add-partner-form .btn-primary { padding: 10px 24px; }
 
-        .add-partner-form .btn-primary {
-            padding: 10px 24px;
+        /* Media Kit Upload */
+        .mediakit-upload {
+            background: var(--white);
+            border: 1px solid var(--gray-medium);
+            border-radius: var(--radius-sm);
+            padding: 24px;
+        }
+        .mediakit-upload .current-file {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 12px 16px;
+            background: var(--gray-light);
+            border-radius: var(--radius-sm);
+            margin-bottom: 16px;
+        }
+        .mediakit-upload .current-file .file-name {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        .mediakit-upload .current-file .file-status {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        .mediakit-upload .upload-form {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .mediakit-upload .upload-form input[type="file"] {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid var(--gray-medium);
+            border-radius: var(--radius-sm);
+            min-width: 200px;
+        }
+        .mediakit-upload .upload-progress {
+            display: none;
+            margin-top: 12px;
+            padding: 10px 16px;
+            background: var(--gray-light);
+            border-radius: var(--radius-sm);
+        }
+        .mediakit-upload .upload-progress .loader-small {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--gray-medium);
+            border-top: 2px solid var(--red);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            vertical-align: middle;
+            margin-right: 12px;
         }
 
         .toast {
@@ -307,15 +311,9 @@
             transition: var(--transition);
             z-index: 999;
         }
-
-        .toast.show {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
+        .toast.show { transform: translateY(0); opacity: 1; }
         .toast.success { border-left: 3px solid #4caf50; }
         .toast.error { border-left: 3px solid #ff4444; }
-
         .back-link {
             color: var(--text-muted);
             text-decoration: none;
@@ -325,41 +323,26 @@
             align-items: center;
             gap: 8px;
         }
-
-        .back-link:hover {
-            color: var(--text-primary);
-        }
+        .back-link:hover { color: var(--text-primary); }
 
         @media (max-width: 768px) {
             .dashboard-header {
                 flex-direction: column;
                 align-items: flex-start;
             }
-            .dashboard-stats {
-                width: 100%;
-            }
-            .stat-card {
-                flex: 1;
-                min-width: 80px;
-            }
-            .dashboard-title {
-                font-size: 28px;
-            }
-            .add-partner-form {
-                flex-direction: column;
-            }
-            .add-partner-form input {
-                width: 100%;
-            }
-            .partner-grid {
-                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-            }
+            .dashboard-stats { width: 100%; }
+            .stat-card { flex: 1; min-width: 80px; }
+            .dashboard-title { font-size: 28px; }
+            .add-partner-form { flex-direction: column; }
+            .add-partner-form input { width: 100%; }
+            .partner-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
+            .mediakit-upload .upload-form { flex-direction: column; }
+            .mediakit-upload .upload-form input[type="file"] { width: 100%; }
         }
     </style>
 </head>
 <body>
 
-    <!-- ==================== NAVIGATION ==================== -->
     <nav class="navbar">
         <div class="container">
             <div class="nav-inner">
@@ -375,7 +358,6 @@
         </div>
     </nav>
 
-    <!-- ==================== DASHBOARD ==================== -->
     <section class="dashboard-layout">
         <div class="container">
             <div class="dashboard-header">
@@ -399,10 +381,10 @@
                 </div>
             </div>
 
-            <!-- Tabs -->
             <div class="dashboard-tabs">
                 <button class="active" data-tab="members">Members</button>
                 <button data-tab="partners">Partners</button>
+                <button data-tab="mediakit">Media Kit</button>
             </div>
 
             <!-- Tab: Members -->
@@ -418,7 +400,6 @@
                         <i class="fa-solid fa-trash"></i> Delete All
                     </button>
                 </div>
-
                 <div class="table-wrap">
                     <table>
                         <thead>
@@ -452,15 +433,16 @@
                         <i class="fa-solid fa-rotate"></i> Refresh
                     </button>
                 </div>
-
                 <div class="partner-grid" id="partnerGrid">
-                    <!-- Partners loaded here -->
+                    <div class="empty-state" style="grid-column:1/-1;">
+                        <i class="fa-regular fa-image"></i>
+                        <p>Loading partners...</p>
+                    </div>
                 </div>
-
                 <h3 style="font-family:'Playfair Display',serif; font-size:20px; margin-top:30px; margin-bottom:16px;">Add New Partner</h3>
                 <div class="add-partner-form">
-                    <input type="text" id="partnerName" placeholder="Partner Name (e.g., Adidas)" />
-                    <input type="text" id="partnerUrl" placeholder="Logo URL (e.g., /images/adidas.png)" />
+                    <input type="text" id="partnerName" placeholder="Partner Name" />
+                    <input type="text" id="partnerUrl" placeholder="Logo URL (e.g., /images/partner.png)" />
                     <button class="btn-primary" onclick="addPartner()">
                         <i class="fa-regular fa-plus"></i> Add Partner
                     </button>
@@ -469,28 +451,56 @@
                     💡 Upload logo images to the website folder first, then enter the file path (e.g., /images/partner.png)
                 </p>
             </div>
+
+            <!-- Tab: Media Kit -->
+            <div class="tab-content" id="tab-mediakit">
+                <h3 style="font-family:'Playfair Display',serif; font-size:20px; margin-bottom:16px;">Media Kit</h3>
+                <p style="color:var(--text-secondary); margin-bottom:20px;">Upload a PDF file that will be downloaded when users click "Request Media Kit" on the website.</p>
+                
+                <div class="mediakit-upload">
+                    <div class="current-file">
+                        <i class="fa-regular fa-file-pdf" style="font-size:24px; color:var(--red);"></i>
+                        <div>
+                            <div class="file-name">Current Media Kit</div>
+                            <div class="file-status" id="mediaKitStatus">Checking...</div>
+                        </div>
+                        <button class="btn-outline" onclick="checkMediaKit()" style="margin-left:auto;">
+                            <i class="fa-solid fa-rotate"></i> Check
+                        </button>
+                    </div>
+
+                    <form id="mediaKitForm" class="upload-form">
+                        <input type="file" id="mediaKitFile" accept=".pdf" required />
+                        <button type="submit" class="btn-primary">
+                            <i class="fa-regular fa-upload"></i> Upload PDF
+                        </button>
+                    </form>
+                    <div class="upload-progress" id="mediaKitProgress">
+                        <span class="loader-small"></span>
+                        <span style="color:var(--text-secondary);">Uploading...</span>
+                    </div>
+                </div>
+                <p style="font-size:12px; color:var(--text-muted); margin-top:12px;">
+                    💡 PDF will be available at: <strong>/media-kit.pdf</strong> on your website.
+                </p>
+            </div>
         </div>
     </section>
 
-    <!-- ==================== TOAST ==================== -->
     <div class="toast" id="toast"></div>
 
-    <!-- ==================== JAVASCRIPT ==================== -->
     <script>
         const API_BASE = '/.netlify/functions';
 
-        // ==========================================
-        // TABS
-        // ==========================================
+        // Tabs
         document.querySelectorAll('.dashboard-tabs button').forEach(btn => {
             btn.addEventListener('click', function() {
                 document.querySelectorAll('.dashboard-tabs button').forEach(b => b.classList.remove('active'));
                 this.classList.add('active');
                 document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
                 document.getElementById('tab-' + this.dataset.tab).classList.add('active');
-                if (this.dataset.tab === 'partners') {
-                    loadPartners();
-                }
+                if (this.dataset.tab === 'partners') loadPartners();
+                if (this.dataset.tab === 'mediakit') checkMediaKit();
             });
         });
 
@@ -500,10 +510,8 @@
         async function fetchMembers() {
             try {
                 const response = await fetch(`${API_BASE}/members`);
-                const data = await response.json();
-                return data;
+                return await response.json();
             } catch (error) {
-                console.error('Error fetching members:', error);
                 return { members: [], count: 0 };
             }
         }
@@ -511,11 +519,9 @@
         async function renderMembers() {
             const tbody = document.getElementById('membersTableBody');
             const data = await fetchMembers();
-
             document.getElementById('totalMembers').textContent = data.count || 0;
             const progress = Math.round(((data.count || 0) / 100) * 100);
             document.getElementById('roadProgress').textContent = progress + '%';
-
             if (!data.members || data.members.length === 0) {
                 tbody.innerHTML = `
                     <tr>
@@ -529,7 +535,6 @@
                 `;
                 return;
             }
-
             tbody.innerHTML = data.members.map((member, index) => `
                 <tr>
                     <td>${index + 1}</td>
@@ -538,16 +543,14 @@
                     <td><span class="member-role">${member.role}</span></td>
                     <td>${member.timestamp ? new Date(member.timestamp).toLocaleDateString() : 'N/A'}</td>
                     <td style="text-align:center;">
-                        <button class="delete-btn" onclick="deleteMember('${member.id}')" title="Delete member">
-                            <i class="fa-regular fa-trash-can"></i>
-                        </button>
+                        <button class="delete-btn" onclick="deleteMember('${member.id}')"><i class="fa-regular fa-trash-can"></i></button>
                     </td>
                 </tr>
             `).join('');
         }
 
         async function deleteMember(id) {
-            if (!confirm('Are you sure you want to delete this member?')) return;
+            if (!confirm('Delete this member?')) return;
             try {
                 const response = await fetch(`${API_BASE}/delete-member`, {
                     method: 'POST',
@@ -555,20 +558,13 @@
                     body: JSON.stringify({ id })
                 });
                 const result = await response.json();
-                if (result.success) {
-                    showToast('Member deleted successfully.', 'success');
-                    renderMembers();
-                } else {
-                    showToast('Failed to delete member.', 'error');
-                }
-            } catch (error) {
-                showToast('Error deleting member.', 'error');
-            }
+                if (result.success) { showToast('Member deleted.', 'success'); renderMembers(); }
+                else showToast('Failed to delete.', 'error');
+            } catch (error) { showToast('Error deleting.', 'error'); }
         }
 
         async function confirmDeleteAll() {
-            if (!confirm('⚠️ Are you sure you want to delete ALL members? This cannot be undone.')) return;
-            if (!confirm('Really? All member data will be permanently removed.')) return;
+            if (!confirm('Delete ALL members?')) return;
             try {
                 const response = await fetch(`${API_BASE}/delete-member`, {
                     method: 'POST',
@@ -576,30 +572,18 @@
                     body: JSON.stringify({ deleteAll: true })
                 });
                 const result = await response.json();
-                if (result.success) {
-                    showToast('All members deleted.', 'success');
-                    renderMembers();
-                } else {
-                    showToast('Failed to delete members.', 'error');
-                }
-            } catch (error) {
-                showToast('Error deleting members.', 'error');
-            }
+                if (result.success) { showToast('All members deleted.', 'success'); renderMembers(); }
+                else showToast('Failed.', 'error');
+            } catch (error) { showToast('Error.', 'error'); }
         }
 
         async function exportCSV() {
             try {
                 const data = await fetchMembers();
-                if (!data.members || data.members.length === 0) {
-                    showToast('No members to export.', 'error');
-                    return;
-                }
+                if (!data.members || data.members.length === 0) { showToast('No members to export.', 'error'); return; }
                 const headers = ['Name', 'Email', 'Role', 'Message', 'Joined'];
                 const rows = data.members.map(m => [
-                    `"${m.name}"`,
-                    `"${m.email}"`,
-                    `"${m.role}"`,
-                    `"${m.message || ''}"`,
+                    `"${m.name}"`, `"${m.email}"`, `"${m.role}"`, `"${m.message || ''}"`,
                     `"${m.timestamp ? new Date(m.timestamp).toLocaleString() : ''}"`
                 ]);
                 const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
@@ -610,16 +594,11 @@
                 a.download = `100HUB_Members_${new Date().toISOString().slice(0,10)}.csv`;
                 a.click();
                 URL.revokeObjectURL(url);
-                showToast('CSV exported successfully!', 'success');
-            } catch (error) {
-                showToast('Error exporting CSV.', 'error');
-            }
+                showToast('CSV exported!', 'success');
+            } catch (error) { showToast('Error exporting.', 'error'); }
         }
 
-        function refreshMembers() {
-            renderMembers();
-            showToast('Refreshed!', 'success');
-        }
+        function refreshMembers() { renderMembers(); showToast('Refreshed!', 'success'); }
 
         // ==========================================
         // PARTNERS
@@ -629,47 +608,31 @@
                 const response = await fetch(`${API_BASE}/partners`);
                 const data = await response.json();
                 const grid = document.getElementById('partnerGrid');
-
                 if (!data.logos || data.logos.length === 0) {
                     grid.innerHTML = `
                         <div class="empty-state" style="grid-column:1/-1;">
                             <i class="fa-regular fa-image"></i>
                             <p>No partners added yet.</p>
-                            <p style="font-size:12px;">Use the form below to add partner logos.</p>
                         </div>
                     `;
                     document.getElementById('totalPartners').textContent = '0';
                     return;
                 }
-
                 document.getElementById('totalPartners').textContent = data.logos.length;
-
                 grid.innerHTML = data.logos.map(logo => `
                     <div class="partner-card">
                         <img src="${logo.url}" alt="${logo.name}" onerror="this.style.display='none'" />
                         <div class="partner-name">${logo.name}</div>
-                        <button class="remove-partner" onclick="deletePartner('${logo.id}')" title="Remove partner">
-                            <i class="fa-regular fa-trash-can"></i>
-                        </button>
+                        <button class="remove-partner" onclick="deletePartner('${logo.id}')"><i class="fa-regular fa-trash-can"></i></button>
                     </div>
                 `).join('');
-            } catch (error) {
-                console.error('Error loading partners:', error);
-                showToast('Error loading partners.', 'error');
-            }
+            } catch (error) { showToast('Error loading partners.', 'error'); }
         }
 
         async function addPartner() {
-            const nameInput = document.getElementById('partnerName');
-            const urlInput = document.getElementById('partnerUrl');
-            const name = nameInput.value.trim();
-            const url = urlInput.value.trim();
-
-            if (!name || !url) {
-                showToast('Please enter both name and URL.', 'error');
-                return;
-            }
-
+            const name = document.getElementById('partnerName').value.trim();
+            const url = document.getElementById('partnerUrl').value.trim();
+            if (!name || !url) { showToast('Please enter both name and URL.', 'error'); return; }
             try {
                 const response = await fetch(`${API_BASE}/partners`, {
                     method: 'POST',
@@ -677,21 +640,16 @@
                     body: JSON.stringify({ name, url })
                 });
                 const result = await response.json();
-                if (result.success) {
-                    showToast('Partner added successfully!', 'success');
-                    nameInput.value = '';
-                    urlInput.value = '';
+                if (result.success) { showToast('Partner added!', 'success');
+                    document.getElementById('partnerName').value = '';
+                    document.getElementById('partnerUrl').value = '';
                     loadPartners();
-                } else {
-                    showToast('Failed to add partner.', 'error');
-                }
-            } catch (error) {
-                showToast('Error adding partner.', 'error');
-            }
+                } else showToast('Failed to add.', 'error');
+            } catch (error) { showToast('Error adding.', 'error'); }
         }
 
         async function deletePartner(id) {
-            if (!confirm('Remove this partner logo?')) return;
+            if (!confirm('Remove this partner?')) return;
             try {
                 const response = await fetch(`${API_BASE}/partners`, {
                     method: 'DELETE',
@@ -699,16 +657,78 @@
                     body: JSON.stringify({ id })
                 });
                 const result = await response.json();
-                if (result.success) {
-                    showToast('Partner removed.', 'success');
-                    loadPartners();
+                if (result.success) { showToast('Partner removed.', 'success'); loadPartners(); }
+                else showToast('Failed to remove.', 'error');
+            } catch (error) { showToast('Error removing.', 'error'); }
+        }
+
+        // ==========================================
+        // MEDIA KIT
+        // ==========================================
+        async function checkMediaKit() {
+            const status = document.getElementById('mediaKitStatus');
+            try {
+                const response = await fetch('/media-kit.pdf', { method: 'HEAD' });
+                if (response.ok) {
+                    const fileSize = response.headers.get('Content-Length');
+                    const sizeMB = fileSize ? (parseInt(fileSize) / 1024 / 1024).toFixed(2) : 'unknown';
+                    status.innerHTML = `<span style="color:#4caf50;">✅ PDF available (${sizeMB} MB)</span>`;
                 } else {
-                    showToast('Failed to remove partner.', 'error');
+                    status.innerHTML = `<span style="color:#ff9800;">⚠️ No Media Kit uploaded yet</span>`;
                 }
             } catch (error) {
-                showToast('Error removing partner.', 'error');
+                status.innerHTML = `<span style="color:#ff4444;">❌ Could not check</span>`;
             }
         }
+
+        document.getElementById('mediaKitForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const fileInput = document.getElementById('mediaKitFile');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                showToast('Please select a PDF file.', 'error');
+                return;
+            }
+            
+            if (file.type !== 'application/pdf') {
+                showToast('Please upload a PDF file.', 'error');
+                return;
+            }
+            
+            if (file.size > 10 * 1024 * 1024) {
+                showToast('File size must be under 10MB.', 'error');
+                return;
+            }
+            
+            const progress = document.getElementById('mediaKitProgress');
+            progress.style.display = 'block';
+            
+            const formData = new FormData();
+            formData.append('file', file);
+            
+            fetch('/.netlify/functions/upload-media-kit', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(result => {
+                progress.style.display = 'none';
+                if (result.success) {
+                    showToast('Media Kit uploaded successfully!', 'success');
+                    checkMediaKit();
+                    fileInput.value = '';
+                } else {
+                    showToast(result.error || 'Failed to upload.', 'error');
+                }
+            })
+            .catch(error => {
+                progress.style.display = 'none';
+                showToast('Error uploading.', 'error');
+                console.error('Upload error:', error);
+            });
+        });
 
         // ==========================================
         // TOAST
@@ -719,9 +739,7 @@
             toast.className = `toast ${type}`;
             toast.classList.add('show');
             clearTimeout(toast._timeout);
-            toast._timeout = setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
+            toast._timeout = setTimeout(() => toast.classList.remove('show'), 3000);
         }
 
         // ==========================================
@@ -730,10 +748,8 @@
         document.addEventListener('DOMContentLoaded', function() {
             renderMembers();
             loadPartners();
+            checkMediaKit();
         });
-
-        console.log('📊 100 HUB Dashboard loaded.');
     </script>
-
 </body>
 </html>
