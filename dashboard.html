@@ -240,67 +240,6 @@
         }
         .add-partner-form .btn-primary { padding: 10px 24px; }
 
-        /* Media Kit Upload */
-        .mediakit-upload {
-            background: var(--white);
-            border: 1px solid var(--gray-medium);
-            border-radius: var(--radius-sm);
-            padding: 24px;
-        }
-        .mediakit-upload .current-file {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            padding: 12px 16px;
-            background: var(--gray-light);
-            border-radius: var(--radius-sm);
-            margin-bottom: 16px;
-        }
-        .mediakit-upload .current-file .file-name {
-            font-weight: 500;
-            color: var(--text-primary);
-        }
-        .mediakit-upload .current-file .file-status {
-            font-size: 12px;
-            color: var(--text-muted);
-        }
-        .mediakit-upload .upload-form {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-        .mediakit-upload .upload-form input[type="url"] {
-            flex: 1;
-            padding: 10px 16px;
-            border: 1px solid var(--gray-medium);
-            border-radius: var(--radius-sm);
-            min-width: 250px;
-            font-size: 14px;
-        }
-        .mediakit-upload .upload-form input[type="url"]:focus {
-            outline: none;
-            border-color: var(--red);
-        }
-        .mediakit-upload .upload-progress {
-            display: none;
-            margin-top: 12px;
-            padding: 10px 16px;
-            background: var(--gray-light);
-            border-radius: var(--radius-sm);
-        }
-        .mediakit-upload .upload-progress .loader-small {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 2px solid var(--gray-medium);
-            border-top: 2px solid var(--red);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            vertical-align: middle;
-            margin-right: 12px;
-        }
-
         .toast {
             position: fixed;
             bottom: 30px;
@@ -341,8 +280,6 @@
             .add-partner-form { flex-direction: column; }
             .add-partner-form input { width: 100%; }
             .partner-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
-            .mediakit-upload .upload-form { flex-direction: column; }
-            .mediakit-upload .upload-form input[type="url"] { width: 100%; }
         }
     </style>
 </head>
@@ -389,7 +326,6 @@
             <div class="dashboard-tabs">
                 <button class="active" data-tab="members">Members</button>
                 <button data-tab="partners">Partners</button>
-                <button data-tab="mediakit">Media Kit</button>
             </div>
 
             <!-- Tab: Members -->
@@ -461,44 +397,6 @@
                     💡 Upload images to Cloudinary, then copy the image URL and paste it here.
                 </p>
             </div>
-
-            <!-- Tab: Media Kit -->
-            <div class="tab-content" id="tab-mediakit">
-                <h3 style="font-family:'Playfair Display',serif; font-size:20px; margin-bottom:16px;">Media Kit</h3>
-                <p style="color:var(--text-secondary); margin-bottom:20px;">Upload your Media Kit PDF to Cloudinary or Google Drive, then paste the URL here.</p>
-                
-                <div class="mediakit-upload">
-                    <div class="current-file">
-                        <i class="fa-regular fa-file-pdf" style="font-size:24px; color:var(--red);"></i>
-                        <div>
-                            <div class="file-name">Current Media Kit</div>
-                            <div class="file-status" id="mediaKitStatus">Checking...</div>
-                        </div>
-                        <div style="margin-left:auto; display:flex; gap:8px;">
-                            <button class="btn-outline" onclick="checkMediaKit()">
-                                <i class="fa-solid fa-rotate"></i> Check
-                            </button>
-                            <a id="mediaKitDownloadLink" href="#" target="_blank" style="display:none;" class="btn-primary">
-                                <i class="fa-solid fa-download"></i> Download
-                            </a>
-                        </div>
-                    </div>
-
-                    <form id="mediaKitForm" class="upload-form" style="margin-top:16px;">
-                        <input type="url" id="mediaKitUrl" placeholder="Paste Media Kit URL (Cloudinary, Google Drive, etc.)" required />
-                        <button type="submit" class="btn-primary">
-                            <i class="fa-regular fa-upload"></i> Save URL
-                        </button>
-                    </form>
-                    <div id="mediaKitProgress" style="display:none; margin-top:12px; padding:10px; background:var(--gray-light); border-radius:var(--radius-sm);">
-                        <span class="loader-small"></span>
-                        <span style="color:var(--text-secondary);">Saving...</span>
-                    </div>
-                </div>
-                <p style="font-size:12px; color:var(--text-muted); margin-top:12px;">
-                    💡 <strong>How to get a Media Kit URL:</strong> Upload your PDF to Cloudinary, Google Drive, or Dropbox, then copy the share link.
-                </p>
-            </div>
         </div>
     </section>
 
@@ -517,7 +415,6 @@
                 document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
                 document.getElementById('tab-' + this.dataset.tab).classList.add('active');
                 if (this.dataset.tab === 'partners') loadPartners();
-                if (this.dataset.tab === 'mediakit') checkMediaKit();
             });
         });
 
@@ -761,84 +658,6 @@
         }
 
         // ==========================================
-        // MEDIA KIT
-        // ==========================================
-        async function checkMediaKit() {
-            const status = document.getElementById('mediaKitStatus');
-            const downloadLink = document.getElementById('mediaKitDownloadLink');
-            
-            try {
-                const response = await fetch(`${API_BASE}/upload-media-kit`);
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data.url) {
-                        status.innerHTML = `<span style="color:#4caf50;">✅ Media Kit available</span>`;
-                        downloadLink.style.display = 'inline-flex';
-                        downloadLink.href = data.url;
-                        return;
-                    }
-                }
-                status.innerHTML = `<span style="color:#ff9800;">⚠️ No Media Kit URL set</span>`;
-                downloadLink.style.display = 'none';
-            } catch (error) {
-                console.error('Check media kit error:', error);
-                status.innerHTML = `<span style="color:#ff4444;">❌ Could not check</span>`;
-                downloadLink.style.display = 'none';
-            }
-        }
-
-        // Media Kit Form
-        const mediaKitForm = document.getElementById('mediaKitForm');
-        if (mediaKitForm) {
-            mediaKitForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const urlInput = document.getElementById('mediaKitUrl');
-                const url = urlInput.value.trim();
-                
-                if (!url) {
-                    showToast('Please enter a URL.', 'error');
-                    return;
-                }
-                
-                // Validate URL
-                try {
-                    new URL(url);
-                } catch (e) {
-                    showToast('Please enter a valid URL (e.g., https://...).', 'error');
-                    return;
-                }
-                
-                const progress = document.getElementById('mediaKitProgress');
-                progress.style.display = 'block';
-                
-                fetch(`${API_BASE}/upload-media-kit`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ url })
-                })
-                .then(response => response.json())
-                .then(result => {
-                    progress.style.display = 'none';
-                    if (result.success) {
-                        showToast('Media Kit URL saved successfully!', 'success');
-                        checkMediaKit();
-                        urlInput.value = '';
-                    } else {
-                        showToast(result.error || 'Failed to save.', 'error');
-                    }
-                })
-                .catch(error => {
-                    progress.style.display = 'none';
-                    console.error('Media kit error:', error);
-                    showToast('Error saving media kit.', 'error');
-                });
-            });
-        } else {
-            console.warn('Media Kit form not found in the DOM.');
-        }
-
-        // ==========================================
         // TOAST
         // ==========================================
         function showToast(message, type = 'info') {
@@ -859,7 +678,6 @@
         document.addEventListener('DOMContentLoaded', function() {
             renderMembers();
             loadPartners();
-            checkMediaKit();
         });
 
         console.log('📊 100 HUB Dashboard loaded.');

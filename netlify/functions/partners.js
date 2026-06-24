@@ -11,8 +11,13 @@ exports.handler = async function(event, context) {
         'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS'
     };
 
+    // Handle preflight OPTIONS request
     if (event.httpMethod === 'OPTIONS') {
-        return { statusCode: 204, headers, body: '' };
+        return {
+            statusCode: 204,
+            headers: headers,
+            body: ''
+        };
     }
 
     // GET - fetch all partners
@@ -23,19 +28,20 @@ exports.handler = async function(event, context) {
                 const data = await response.json();
                 return {
                     statusCode: 200,
-                    headers,
+                    headers: headers,
                     body: JSON.stringify({ logos: Array.isArray(data) ? data : [] })
                 };
             }
             return {
                 statusCode: 200,
-                headers,
+                headers: headers,
                 body: JSON.stringify({ logos: [] })
             };
         } catch (error) {
+            console.error('GET partners error:', error);
             return {
                 statusCode: 200,
-                headers,
+                headers: headers,
                 body: JSON.stringify({ logos: [] })
             };
         }
@@ -44,12 +50,13 @@ exports.handler = async function(event, context) {
     // POST - add a new partner
     if (event.httpMethod === 'POST') {
         try {
-            const { url, name } = JSON.parse(event.body);
+            const body = JSON.parse(event.body);
+            const { url, name } = body;
 
             if (!url || !name) {
                 return {
                     statusCode: 400,
-                    headers,
+                    headers: headers,
                     body: JSON.stringify({ error: 'URL and name are required' })
                 };
             }
@@ -65,7 +72,7 @@ exports.handler = async function(event, context) {
             });
 
             if (!response.ok) {
-                throw new Error('Failed to add partner');
+                throw new Error('Failed to add partner to Sheet.best');
             }
 
             // Get updated list
@@ -74,7 +81,7 @@ exports.handler = async function(event, context) {
 
             return {
                 statusCode: 200,
-                headers,
+                headers: headers,
                 body: JSON.stringify({
                     success: true,
                     logos: Array.isArray(data) ? data : []
@@ -84,7 +91,7 @@ exports.handler = async function(event, context) {
             console.error('Add partner error:', error);
             return {
                 statusCode: 500,
-                headers,
+                headers: headers,
                 body: JSON.stringify({ error: 'Failed to add partner: ' + error.message })
             };
         }
@@ -93,25 +100,30 @@ exports.handler = async function(event, context) {
     // DELETE - remove a partner
     if (event.httpMethod === 'DELETE') {
         try {
-            const { id } = JSON.parse(event.body);
+            const body = JSON.parse(event.body);
+            const { id } = body;
 
             if (!id) {
                 return {
                     statusCode: 400,
-                    headers,
+                    headers: headers,
                     body: JSON.stringify({ error: 'ID is required' })
                 };
             }
 
             // Find the partner to delete
             const getResponse = await fetch(SHEET_BEST_API);
-            const partners = await getResponse.json();
+            if (!getResponse.ok) {
+                throw new Error('Failed to fetch partners');
+            }
 
+            const partners = await getResponse.json();
             const partnerToDelete = Array.isArray(partners) ? partners.find(p => p.id === id) : null;
+
             if (!partnerToDelete) {
                 return {
                     statusCode: 404,
-                    headers,
+                    headers: headers,
                     body: JSON.stringify({ error: 'Partner not found' })
                 };
             }
@@ -122,7 +134,7 @@ exports.handler = async function(event, context) {
             });
 
             if (!deleteResponse.ok) {
-                throw new Error('Failed to delete partner');
+                throw new Error('Failed to delete partner from Sheet.best');
             }
 
             // Get updated list
@@ -131,7 +143,7 @@ exports.handler = async function(event, context) {
 
             return {
                 statusCode: 200,
-                headers,
+                headers: headers,
                 body: JSON.stringify({
                     success: true,
                     logos: Array.isArray(data) ? data : []
@@ -141,7 +153,7 @@ exports.handler = async function(event, context) {
             console.error('Delete partner error:', error);
             return {
                 statusCode: 500,
-                headers,
+                headers: headers,
                 body: JSON.stringify({ error: 'Failed to delete partner: ' + error.message })
             };
         }
@@ -149,7 +161,7 @@ exports.handler = async function(event, context) {
 
     return {
         statusCode: 405,
-        headers,
+        headers: headers,
         body: JSON.stringify({ error: 'Method not allowed' })
     };
 };

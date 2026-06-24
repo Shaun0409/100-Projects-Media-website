@@ -11,25 +11,33 @@ exports.handler = async function(event, context) {
         'Access-Control-Allow-Methods': 'POST, OPTIONS'
     };
 
+    // Handle preflight OPTIONS request
     if (event.httpMethod === 'OPTIONS') {
-        return { statusCode: 204, headers, body: '' };
+        return {
+            statusCode: 204,
+            headers: headers,
+            body: ''
+        };
     }
 
+    // Only allow POST
     if (event.httpMethod !== 'POST') {
         return {
             statusCode: 405,
-            headers,
+            headers: headers,
             body: JSON.stringify({ error: 'Method not allowed' })
         };
     }
 
     try {
-        const { id } = JSON.parse(event.body);
+        const body = JSON.parse(event.body);
+        const { id } = body;
 
+        // Prevent deleting owners
         if (id && id.startsWith('owner_')) {
             return {
                 statusCode: 400,
-                headers,
+                headers: headers,
                 body: JSON.stringify({ error: 'Cannot delete default owners' })
             };
         }
@@ -41,10 +49,10 @@ exports.handler = async function(event, context) {
         }
 
         const members = await getResponse.json();
-        if (!Array.isArray(members)) {
+        if (!Array.isArray(members) || members.length === 0) {
             return {
                 statusCode: 404,
-                headers,
+                headers: headers,
                 body: JSON.stringify({ error: 'No members found' })
             };
         }
@@ -54,7 +62,7 @@ exports.handler = async function(event, context) {
         if (!memberToDelete) {
             return {
                 statusCode: 404,
-                headers,
+                headers: headers,
                 body: JSON.stringify({ error: 'Member not found' })
             };
         }
@@ -64,30 +72,34 @@ exports.handler = async function(event, context) {
         if (ownerEmails.includes(memberToDelete.email)) {
             return {
                 statusCode: 400,
-                headers,
+                headers: headers,
                 body: JSON.stringify({ error: 'Cannot delete default owners' })
             };
         }
 
-        // Delete from Sheet.best
+        // Get the row ID from Sheet.best (they use a different ID system)
+        // Sheet.best uses its own internal ID
         const deleteResponse = await fetch(`${SHEET_BEST_API}/${memberToDelete.id}`, {
             method: 'DELETE'
         });
 
         if (!deleteResponse.ok) {
-            throw new Error('Failed to delete member');
+            throw new Error('Failed to delete member from Sheet.best');
         }
 
         return {
             statusCode: 200,
-            headers,
-            body: JSON.stringify({ success: true, message: 'Member deleted' })
+            headers: headers,
+            body: JSON.stringify({ 
+                success: true, 
+                message: 'Member deleted successfully' 
+            })
         };
     } catch (error) {
         console.error('Delete error:', error);
         return {
             statusCode: 500,
-            headers,
+            headers: headers,
             body: JSON.stringify({ error: 'Failed to delete member: ' + error.message })
         };
     }
