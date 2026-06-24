@@ -27,8 +27,11 @@
                     <span class="hamburger"></span>
                 </button>
                 <div class="nav-links">
-                    <a href="#feed">Work</a>
+                    <a href="#about">About</a>
+                    <a href="#feed">Media</a>
                     <a href="#community">Community</a>
+                    <a href="#partners">Partners</a>
+                    <a href="#work">Work With Us</a>
                     <a href="#team">Team</a>
                     <a href="#contact">Contact</a>
                 </div>
@@ -43,7 +46,6 @@
             <div class="hero-content">
                 <img src="Assets/100_Logo.png" alt="100 HUB" class="hero-logo-img" />
                 <h1 class="hero-title">
-                    <span class="hero-number">100</span>
                     <span class="hero-word">HUB</span>
                 </h1>
                 <div class="hero-divider">
@@ -62,17 +64,39 @@
                 </div>
             </div>
         </div>
-        <!-- <div class="hero-scroll">
+        <div class="hero-scroll">
             <span>Scroll</span>
             <div class="scroll-line"></div>
-        </div> -->
+        </div>
+    </section>
+
+    <!-- ==================== ABOUT ==================== -->
+    <section class="about-section" id="about">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-number">01</span>
+                <h2 class="section-title">About <span class="highlight-red">100</span></h2>
+                <div class="section-divider">
+                    <span class="divider-line-short"></span>
+                    <span class="divider-dot"></span>
+                    <span class="divider-dot"></span>
+                    <span class="divider-dot"></span>
+                    <span class="divider-dot"></span>
+                    <span class="divider-line-short"></span>
+                </div>
+            </div>
+            <div class="about-content">
+                <p>100 Projects Media is a South African cultural media platform focused on fashion, music, sport, business and community. Through 100 Magazine, 100 Conversations, events and multimedia production, we create stories that connect brands with culture-first audiences.</p>
+                <p>Our work spans editorial publishing, photography, film, podcasts, live experiences and strategic content distribution across digital platforms.</p>
+            </div>
+        </div>
     </section>
 
     <!-- ==================== FEED ==================== -->
     <section class="feed-section" id="feed">
         <div class="container">
             <div class="section-header">
-                <span class="section-number">01</span>
+                <span class="section-number">02</span>
                 <h2 class="section-title">Media</h2>
                 <div class="section-divider">
                     <span class="divider-line-short"></span>
@@ -90,7 +114,6 @@
                     <p>Loading the latest dispatches...</p>
                 </div>
             </div>
-            <!-- See More Posts Button -->
             <div class="see-more-container">
                 <a href="https://www.instagram.com/100projectsmedia" target="_blank" class="see-more-btn">
                     See More Posts <i class="fa-solid fa-arrow-right"></i>
@@ -114,7 +137,7 @@
     <section class="community-section" id="community">
         <div class="container">
             <div class="section-header">
-                <span class="section-number">02</span>
+                <span class="section-number">03</span>
                 <h2 class="section-title">Join the <span class="highlight-red">Community</span></h2>
                 <div class="section-divider">
                     <span class="divider-line-short"></span>
@@ -124,26 +147,27 @@
                     <span class="divider-dot"></span>
                     <span class="divider-line-short"></span>
                 </div>
-                <p class="section-subtitle">Become part of the 100 HUB ecosystem</p>
-            </div>
-
-            <!-- ROAD TO 100 COUNTER -->
-            <div class="road-to-100">
-                <span class="road-label">ROAD TO 100</span>
-                <div class="road-counter">
-                    <span class="road-number" id="memberCount">3</span>
-                    <span class="road-total">/ 100</span>
-                </div>
-                <div class="road-progress">
-                    <div class="road-progress-bar" id="progressBar" style="width: 3%;"></div>
-                </div>
-                <p class="road-status" id="roadStatus">3 creators have joined the journey</p>
+                <p class="section-subtitle">The creative network Joburg was missing.</p>
             </div>
 
             <div class="community-grid">
                 <div class="community-content">
                     <h3>Creators Community</h3>
-                    <p>Join a network of creators, writers, and media professionals. Get exclusive content, early access, and opportunities to collaborate.</p>
+                    <p>Connect with writers, creatives, and culture-shapers building something real. Add yourself. Discover talent. Collaborate.</p>
+                    
+                    <!-- ROAD TO 100 COUNTER -->
+                    <div class="road-to-100">
+                        <span class="road-label">ROAD TO 100</span>
+                        <div class="road-counter">
+                            <span class="road-number" id="memberCount">3</span>
+                            <span class="road-total">/ 100</span>
+                        </div>
+                        <div class="road-progress">
+                            <div class="road-progress-bar" id="progressBar" style="width: 3%;"></div>
+                        </div>
+                        <p class="road-status" id="roadStatus">3 creators have joined the journey</p>
+                    </div>
+
                     <ul class="community-benefits">
                         <li><i class="fa-regular fa-circle-check"></i> Creative Opportunities</li>
                         <li><i class="fa-regular fa-circle-check"></i> Editorial Features</li>
@@ -185,11 +209,64 @@
         </div>
     </section>
 
+    <!-- ==================== PARTNER LOGOS ==================== -->
+    <section class="partners-section" id="partners">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-number">04</span>
+                <h2 class="section-title">Trusted <span class="highlight-red">By</span></h2>
+                <div class="section-divider">
+                    <span class="divider-line-short"></span>
+                    <span class="divider-dot"></span>
+                    <span class="divider-dot"></span>
+                    <span class="divider-dot"></span>
+                    <span class="divider-dot"></span>
+                    <span class="divider-line-short"></span>
+                </div>
+            </div>
+            <div class="partners-wrapper">
+                <div class="partners-track" id="partnersTrack">
+                    <!-- Logos will be loaded here by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== WORK WITH US ==================== -->
+    <section class="work-section" id="work">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-number">05</span>
+                <h2 class="section-title">Work With <span class="highlight-red">Us</span></h2>
+                <div class="section-divider">
+                    <span class="divider-line-short"></span>
+                    <span class="divider-dot"></span>
+                    <span class="divider-dot"></span>
+                    <span class="divider-dot"></span>
+                    <span class="divider-dot"></span>
+                    <span class="divider-line-short"></span>
+                </div>
+            </div>
+            <div class="work-content">
+                <p class="work-text">Whether you're launching a campaign, publishing a story, producing an event or looking for cultural insight, 100 Hub can help you.</p>
+                <div class="work-actions">
+                    <a href="#" class="btn-primary">Request Media Kit</a>
+                    <a href="#" class="btn-secondary">Start Partnership</a>
+                </div>
+                <div class="work-contact">
+                    <a href="mailto:hello@100projectsmedia.com" class="work-email">hello@100projectsmedia.com</a>
+                    <span class="work-divider">·</span>
+                    <a href="https://www.instagram.com/100projectsmedia" target="_blank" class="work-social">@100projectsmedia</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- ==================== TEAM ==================== -->
     <section class="team-section" id="team">
         <div class="container">
             <div class="section-header">
-                <span class="section-number">03</span>
+                <span class="section-number">06</span>
                 <h2 class="section-title">Meet the <span class="highlight-red">Founders</span></h2>
                 <div class="section-divider">
                     <span class="divider-line-short"></span>
@@ -239,7 +316,7 @@
     <section class="contact-section" id="contact">
         <div class="container">
             <div class="section-header">
-                <span class="section-number">04</span>
+                <span class="section-number">07</span>
                 <h2 class="section-title">Contact <span class="highlight-red">Us</span></h2>
                 <div class="section-divider">
                     <span class="divider-line-short"></span>
@@ -443,7 +520,12 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ name, email, role, message })
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(err => { throw new Error(err.error || 'Failed to save member data'); });
+                }
+                return response.json();
+            })
             .then(result => {
                 if (result.success) {
                     localStorage.setItem('memberCount', result.count);
@@ -459,7 +541,7 @@
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('Something went wrong. Please try again.');
+                alert('❌ ' + error.message);
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = '<i class="fa-regular fa-paper-plane"></i> Become a Member';
             });
@@ -549,15 +631,22 @@
                                 <span class="feed-writer"><i class="fa-regular fa-user"></i> ${writer}</span>
                                 <span class="feed-date"><i class="fa-regular fa-calendar"></i> ${date}</span>
                             </div>
-                            <div class="feed-actions">
-                                <button class="feed-link" onclick="openPostModal(this)">
-                                    Read Full Story <i class="fa-solid fa-arrow-right"></i>
-                                </button>
-                            </div>
                         </div>
                     </div>
                 `;
             }).join('');
+            
+            // Click any post to open modal (clicking anywhere on the post)
+            document.querySelectorAll('.feed-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    // If the click is on the "Read Full Story" button, let the button handle it
+                    if (e.target.closest('.feed-link')) return;
+                    const link = this.querySelector('.feed-link');
+                    if (link) {
+                        openPostModal(link);
+                    }
+                });
+            });
             
             document.querySelectorAll('.feed-image video').forEach(video => {
                 video.addEventListener('mouseenter', () => video.play());
@@ -566,6 +655,48 @@
                     video.play();
                 }
             });
+        }
+
+        // ==========================================
+        // PARTNER LOGOS
+        // ==========================================
+        let partnerLogos = [];
+
+        async function loadPartners() {
+            try {
+                const response = await fetch('/partners.json');
+                if (response.ok) {
+                    const data = await response.json();
+                    partnerLogos = data.logos || [];
+                    renderPartnerLogos();
+                }
+            } catch (error) {
+                console.log('ℹ️ Could not load partner logos');
+            }
+        }
+
+        function renderPartnerLogos() {
+            const track = document.getElementById('partnersTrack');
+            if (!track) return;
+
+            if (partnerLogos.length === 0) {
+                track.innerHTML = `
+                    <div class="partner-logo-item">
+                        <div style="padding:20px 40px; color:#999; font-style:italic; text-align:center; white-space:nowrap;">
+                            Partner logos coming soon
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            // Double the logos for seamless infinite scroll
+            const logos = [...partnerLogos, ...partnerLogos];
+            track.innerHTML = logos.map(logo => `
+                <div class="partner-logo-item">
+                    <img src="${logo.url}" alt="${logo.name}" title="${logo.name}" />
+                </div>
+            `).join('');
         }
 
         // ==========================================
@@ -728,6 +859,7 @@
         // ==========================================
         document.addEventListener('DOMContentLoaded', async function() {
             await loadArticles();
+            await loadPartners();
             fetchFeed();
             updateCounterDisplay();
         });
@@ -735,13 +867,39 @@
         console.log('🎯 100 HUB — Website Loaded');
         console.log('📸 Feed ID:', BEHOLD_FEED_ID);
         console.log('👥 Member Count:', getMemberCount(), '/', MAX_MEMBERS);
+        console.log('🤝 Partner Logos:', partnerLogos.length);
+    </script>
 
+    <!-- ==================== POST ID TOOL ==================== -->
+    <div id="postIdTool" style="display:none; position:fixed; bottom:80px; right:20px; max-width:360px; width:90%; max-height:60vh; overflow-y:auto; background:var(--white); border:1px solid #e0e0e0; border-radius:var(--radius-sm); padding:14px 16px; z-index:9998; box-shadow:0 4px 30px rgba(0,0,0,0.1);">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <h3 style="font-family:'Playfair Display',serif; font-size:15px; color:#1A1A1A; margin:0;">🔑 Post IDs</h3>
+            <button onclick="document.getElementById('postIdTool').style.display='none'" style="background:none; border:none; color:#999; font-size:16px; cursor:pointer; padding:0 4px;">✕</button>
+        </div>
+        <p style="font-size:10px; color:#999; margin-bottom:10px;">Copy the ID for each post → paste into Google Sheet with article URL.</p>
+        <div id="postIdList" style="max-height:30vh; overflow-y:auto;">
+            <p style="color:#999; font-size:11px;">Loading posts...</p>
+        </div>
+        <div style="margin-top:10px; display:flex; gap:6px; flex-wrap:wrap;">
+            <button onclick="copyAllPostIds()" style="background:var(--red); color:var(--white); border:none; border-radius:60px; padding:5px 14px; font-size:10px; cursor:pointer;">
+                📋 Copy All
+            </button>
+            <button onclick="document.getElementById('postIdTool').style.display='none'" style="background:#f0f0f0; color:#666; border:1px solid #ddd; border-radius:60px; padding:5px 14px; font-size:10px; cursor:pointer;">
+                Close
+            </button>
+        </div>
+    </div>
+
+    <button onclick="openPostIdTool()" style="position:fixed; bottom:20px; right:20px; background:rgba(227,30,36,0.1); color:var(--red); border:1px solid rgba(227,30,36,0.15); border-radius:50%; width:30px; height:30px; font-size:11px; cursor:pointer; z-index:9999; transition:var(--transition-fast); display:flex; align-items:center; justify-content:center; backdrop-filter:blur(4px); opacity:0.4;">
+        🔑
+    </button>
+
+    <script>
         // ==========================================
-        // POST ID TOOL — Tiny & Simple for Clients
+        // POST ID TOOL FUNCTIONS
         // ==========================================
         let cachedPostIds = [];
 
-        // Make functions globally accessible
         window.openPostIdTool = function() {
             const tool = document.getElementById('postIdTool');
             if (!tool) return;
@@ -784,7 +942,7 @@
             
             const items = document.querySelectorAll('.feed-item');
             if (items.length === 0) {
-                container.innerHTML = '<p style="color:var(--text-muted); font-size:12px;">No posts found. Wait for the feed to load.</p>';
+                container.innerHTML = '<p style="color:#999; font-size:11px;">No posts found. Wait for the feed to load.</p>';
                 return;
             }
 
@@ -806,18 +964,18 @@
                     }
 
                     html += `
-                        <div style="display:flex; align-items:center; gap:12px; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.04);">
+                        <div style="display:flex; align-items:center; gap:12px; padding:8px 0; border-bottom:1px solid #f0f0f0;">
                             ${imgSrc ? `<img src="${imgSrc}" style="width:32px; height:32px; object-fit:cover; border-radius:4px; flex-shrink:0;" />` : ''}
                             <div style="flex:1; min-width:0;">
-                                <div style="font-size:11px; color:var(--text-secondary); font-family:monospace; word-break:break-all; background:rgba(0,0,0,0.3); padding:3px 6px; border-radius:3px;">
+                                <div style="font-size:11px; color:#333; font-family:monospace; word-break:break-all; background:#f5f5f5; padding:3px 6px; border-radius:3px;">
                                     ${postId}
                                 </div>
                             </div>
                             <div style="display:flex; gap:4px; flex-shrink:0;">
-                                <button onclick="copyPostId('${postId}')" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.08); border-radius:4px; color:var(--text-secondary); padding:2px 8px; font-size:10px; cursor:pointer;">
+                                <button onclick="copyPostId('${postId}')" style="background:#f0f0f0; border:1px solid #ddd; border-radius:4px; color:#333; padding:2px 8px; font-size:10px; cursor:pointer;">
                                     📋
                                 </button>
-                                <a href="${permalink}" target="_blank" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.08); border-radius:4px; color:var(--text-secondary); padding:2px 8px; font-size:10px; text-decoration:none;">
+                                <a href="${permalink}" target="_blank" style="background:#f0f0f0; border:1px solid #ddd; border-radius:4px; color:#333; padding:2px 8px; font-size:10px; text-decoration:none;">
                                     👁️
                                 </a>
                             </div>
@@ -827,7 +985,7 @@
             });
 
             if (html === '') {
-                container.innerHTML = '<p style="color:var(--text-muted); font-size:12px;">No posts found.</p>';
+                container.innerHTML = '<p style="color:#999; font-size:11px;">No posts found.</p>';
             } else {
                 container.innerHTML = html;
             }
@@ -860,14 +1018,13 @@
                 bottom: 100px;
                 left: 50%;
                 transform: translateX(-50%);
-                background: var(--black-card);
-                border: 1px solid rgba(255,255,255,0.1);
+                background: #1A1A1A;
                 border-radius: 8px;
                 padding: 10px 20px;
-                color: var(--white);
+                color: #fff;
                 font-size: 12px;
                 z-index: 10000;
-                box-shadow: var(--shadow-large);
+                box-shadow: 0 4px 20px rgba(0,0,0,0.2);
                 animation: fadeInUp 0.3s ease;
                 max-width: 90%;
                 text-align: center;
@@ -907,34 +1064,6 @@
             }
         });
     </script>
-
-    <!-- ==================== POST ID TOOL (Tiny button — bottom right) ==================== -->
-    <!-- Hidden tool panel -->
-    <div id="postIdTool" style="display:none; position:fixed; bottom:80px; right:20px; max-width:360px; width:90%; max-height:60vh; overflow-y:auto; background:var(--black-card); border:1px solid rgba(255,255,255,0.08); border-radius:var(--radius-sm); padding:14px 16px; z-index:9998; box-shadow:var(--shadow-large);">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-            <h3 style="font-family:'Playfair Display',serif; font-size:15px; color:var(--white); margin:0;">🔑 Post IDs</h3>
-            <button onclick="document.getElementById('postIdTool').style.display='none'" style="background:none; border:none; color:var(--text-muted); font-size:16px; cursor:pointer; padding:0 4px;">✕</button>
-        </div>
-        <p style="font-size:10px; color:var(--text-muted); margin-bottom:10px; opacity:0.6;">
-            Copy the ID for each post → paste into Google Sheet with article URL.
-        </p>
-        <div id="postIdList" style="max-height:30vh; overflow-y:auto;">
-            <p style="color:var(--text-muted); font-size:11px;">Loading posts...</p>
-        </div>
-        <div style="margin-top:10px; display:flex; gap:6px; flex-wrap:wrap;">
-            <button onclick="copyAllPostIds()" style="background:var(--red); color:var(--white); border:none; border-radius:60px; padding:5px 14px; font-size:10px; cursor:pointer;">
-                📋 Copy All
-            </button>
-            <button onclick="document.getElementById('postIdTool').style.display='none'" style="background:rgba(255,255,255,0.05); color:var(--text-secondary); border:1px solid rgba(255,255,255,0.06); border-radius:60px; padding:5px 14px; font-size:10px; cursor:pointer;">
-                Close
-            </button>
-        </div>
-    </div>
-
-    <!-- Tiny 🔑 button — bottom right corner -->
-    <button onclick="openPostIdTool()" style="position:fixed; bottom:20px; right:20px; background:rgba(227,30,36,0.12); color:var(--red); border:1px solid rgba(227,30,36,0.15); border-radius:50%; width:30px; height:30px; font-size:11px; cursor:pointer; z-index:9999; transition:var(--transition-fast); display:flex; align-items:center; justify-content:center; backdrop-filter:blur(4px); opacity:0.35;">
-        🔑
-    </button>
 
 </body>
 </html>

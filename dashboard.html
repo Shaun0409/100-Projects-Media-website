@@ -14,7 +14,7 @@
         .dashboard-layout {
             padding-top: 100px;
             min-height: 100vh;
-            background: var(--black);
+            background: var(--warm-white);
         }
 
         .dashboard-header {
@@ -30,7 +30,7 @@
             font-family: 'Playfair Display', serif;
             font-size: 36px;
             font-weight: 600;
-            color: var(--white);
+            color: var(--text-primary);
         }
 
         .dashboard-title span {
@@ -44,8 +44,8 @@
         }
 
         .stat-card {
-            background: var(--black-card);
-            border: 1px solid rgba(255,255,255,0.04);
+            background: var(--white);
+            border: 1px solid var(--gray-medium);
             border-radius: var(--radius-sm);
             padding: 16px 24px;
             text-align: center;
@@ -67,6 +67,47 @@
             color: var(--text-muted);
         }
 
+        .dashboard-tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 24px;
+            background: var(--white);
+            border: 1px solid var(--gray-medium);
+            border-radius: var(--radius-sm);
+            padding: 4px;
+            overflow-x: auto;
+        }
+
+        .dashboard-tabs button {
+            padding: 10px 24px;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition-fast);
+            background: transparent;
+            color: var(--text-secondary);
+            white-space: nowrap;
+        }
+
+        .dashboard-tabs button.active {
+            background: var(--red);
+            color: var(--white);
+        }
+
+        .dashboard-tabs button:hover:not(.active) {
+            background: var(--gray-light);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
         .dashboard-actions {
             display: flex;
             gap: 12px;
@@ -77,8 +118,8 @@
         .btn-outline {
             padding: 10px 20px;
             background: transparent;
-            color: var(--white);
-            border: 1px solid rgba(255,255,255,0.1);
+            color: var(--text-primary);
+            border: 1px solid var(--gray-medium);
             border-radius: 60px;
             font-size: 13px;
             font-weight: 500;
@@ -101,8 +142,8 @@
         }
 
         .table-wrap {
-            background: var(--black-card);
-            border: 1px solid rgba(255,255,255,0.04);
+            background: var(--white);
+            border: 1px solid var(--gray-medium);
             border-radius: var(--radius);
             overflow: hidden;
             overflow-x: auto;
@@ -116,8 +157,8 @@
         }
 
         thead {
-            background: rgba(255,255,255,0.03);
-            border-bottom: 1px solid rgba(255,255,255,0.04);
+            background: var(--gray-light);
+            border-bottom: 1px solid var(--gray-medium);
         }
 
         th {
@@ -132,12 +173,12 @@
 
         td {
             padding: 14px 20px;
-            border-bottom: 1px solid rgba(255,255,255,0.03);
+            border-bottom: 1px solid var(--gray-medium);
             color: var(--text-secondary);
         }
 
         tr:hover td {
-            background: rgba(255,255,255,0.02);
+            background: var(--gray-light);
         }
 
         .member-role {
@@ -146,7 +187,7 @@
             border-radius: 100px;
             font-size: 11px;
             font-weight: 500;
-            background: rgba(227,30,36,0.1);
+            background: rgba(227, 30, 36, 0.08);
             color: var(--red);
         }
 
@@ -162,7 +203,7 @@
 
         .delete-btn:hover {
             color: #ff4444;
-            background: rgba(255,68,68,0.1);
+            background: rgba(255, 68, 68, 0.08);
         }
 
         .empty-state {
@@ -177,15 +218,89 @@
             opacity: 0.3;
         }
 
+        /* Partner Grid */
+        .partner-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .partner-card {
+            background: var(--white);
+            border: 1px solid var(--gray-medium);
+            border-radius: var(--radius-sm);
+            padding: 16px;
+            text-align: center;
+            position: relative;
+        }
+
+        .partner-card img {
+            max-height: 50px;
+            max-width: 100%;
+            object-fit: contain;
+        }
+
+        .partner-card .partner-name {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+
+        .partner-card .remove-partner {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 14px;
+            transition: var(--transition-fast);
+        }
+
+        .partner-card .remove-partner:hover {
+            color: #ff4444;
+        }
+
+        .add-partner-form {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+            padding: 20px;
+            background: var(--white);
+            border: 1px solid var(--gray-medium);
+            border-radius: var(--radius-sm);
+        }
+
+        .add-partner-form input {
+            flex: 1;
+            padding: 10px 16px;
+            border: 1px solid var(--gray-medium);
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            min-width: 150px;
+        }
+
+        .add-partner-form input:focus {
+            outline: none;
+            border-color: var(--red);
+        }
+
+        .add-partner-form .btn-primary {
+            padding: 10px 24px;
+        }
+
         .toast {
             position: fixed;
             bottom: 30px;
             right: 30px;
-            background: var(--black-card);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: var(--white);
+            border: 1px solid var(--gray-medium);
             border-radius: var(--radius-sm);
             padding: 16px 24px;
-            color: var(--white);
+            color: var(--text-primary);
             box-shadow: var(--shadow-lg);
             transform: translateY(100px);
             opacity: 0;
@@ -212,7 +327,7 @@
         }
 
         .back-link:hover {
-            color: var(--white);
+            color: var(--text-primary);
         }
 
         @media (max-width: 768px) {
@@ -230,6 +345,15 @@
             .dashboard-title {
                 font-size: 28px;
             }
+            .add-partner-form {
+                flex-direction: column;
+            }
+            .add-partner-form input {
+                width: 100%;
+            }
+            .partner-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
         }
     </style>
 </head>
@@ -240,7 +364,8 @@
         <div class="container">
             <div class="nav-inner">
                 <a href="/" class="nav-logo">
-                    <span class="logo-text">100 <span class="highlight-red">HUB</span></span>
+                    <img src="Assets/100_Logo.png" alt="100 HUB" class="logo-img" />
+                    <span class="logo-text"><span class="highlight-red">HUB</span></span>
                 </a>
                 <div class="nav-links">
                     <a href="/">Home</a>
@@ -256,7 +381,7 @@
             <div class="dashboard-header">
                 <div>
                     <a href="/" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
-                    <h1 class="dashboard-title">Member <span>Dashboard</span></h1>
+                    <h1 class="dashboard-title">Admin <span>Dashboard</span></h1>
                 </div>
                 <div class="dashboard-stats">
                     <div class="stat-card">
@@ -267,44 +392,82 @@
                         <span class="number" id="roadProgress">0%</span>
                         <span class="label">Road to 100</span>
                     </div>
+                    <div class="stat-card">
+                        <span class="number" id="totalPartners">0</span>
+                        <span class="label">Partners</span>
+                    </div>
                 </div>
             </div>
 
-            <div class="dashboard-actions">
-                <button class="btn-outline" onclick="refreshMembers()">
-                    <i class="fa-solid fa-rotate"></i> Refresh
-                </button>
-                <button class="btn-outline" onclick="exportCSV()">
-                    <i class="fa-solid fa-download"></i> Export CSV
-                </button>
-                <button class="btn-outline danger" onclick="confirmDeleteAll()">
-                    <i class="fa-solid fa-trash"></i> Delete All
-                </button>
+            <!-- Tabs -->
+            <div class="dashboard-tabs">
+                <button class="active" data-tab="members">Members</button>
+                <button data-tab="partners">Partners</button>
             </div>
 
-            <div class="table-wrap">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Role</th>
-                            <th>Joined</th>
-                            <th style="text-align:center;">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="membersTableBody">
-                        <tr>
-                            <td colspan="6">
-                                <div class="empty-state">
-                                    <i class="fa-regular fa-users"></i>
-                                    <p>Loading members...</p>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <!-- Tab: Members -->
+            <div class="tab-content active" id="tab-members">
+                <div class="dashboard-actions">
+                    <button class="btn-outline" onclick="refreshMembers()">
+                        <i class="fa-solid fa-rotate"></i> Refresh
+                    </button>
+                    <button class="btn-outline" onclick="exportCSV()">
+                        <i class="fa-solid fa-download"></i> Export CSV
+                    </button>
+                    <button class="btn-outline danger" onclick="confirmDeleteAll()">
+                        <i class="fa-solid fa-trash"></i> Delete All
+                    </button>
+                </div>
+
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Joined</th>
+                                <th style="text-align:center;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="membersTableBody">
+                            <tr>
+                                <td colspan="6">
+                                    <div class="empty-state">
+                                        <i class="fa-regular fa-users"></i>
+                                        <p>Loading members...</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Tab: Partners -->
+            <div class="tab-content" id="tab-partners">
+                <div class="dashboard-actions">
+                    <button class="btn-outline" onclick="loadPartners()">
+                        <i class="fa-solid fa-rotate"></i> Refresh
+                    </button>
+                </div>
+
+                <div class="partner-grid" id="partnerGrid">
+                    <!-- Partners loaded here -->
+                </div>
+
+                <h3 style="font-family:'Playfair Display',serif; font-size:20px; margin-top:30px; margin-bottom:16px;">Add New Partner</h3>
+                <div class="add-partner-form">
+                    <input type="text" id="partnerName" placeholder="Partner Name (e.g., Adidas)" />
+                    <input type="text" id="partnerUrl" placeholder="Logo URL (e.g., /images/adidas.png)" />
+                    <button class="btn-primary" onclick="addPartner()">
+                        <i class="fa-regular fa-plus"></i> Add Partner
+                    </button>
+                </div>
+                <p style="font-size:12px; color:var(--text-muted); margin-top:8px;">
+                    💡 Upload logo images to the website folder first, then enter the file path (e.g., /images/partner.png)
+                </p>
             </div>
         </div>
     </section>
@@ -317,7 +480,22 @@
         const API_BASE = '/.netlify/functions';
 
         // ==========================================
-        // FETCH MEMBERS
+        // TABS
+        // ==========================================
+        document.querySelectorAll('.dashboard-tabs button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.dashboard-tabs button').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+                document.getElementById('tab-' + this.dataset.tab).classList.add('active');
+                if (this.dataset.tab === 'partners') {
+                    loadPartners();
+                }
+            });
+        });
+
+        // ==========================================
+        // MEMBERS
         // ==========================================
         async function fetchMembers() {
             try {
@@ -330,14 +508,10 @@
             }
         }
 
-        // ==========================================
-        // RENDER TABLE
-        // ==========================================
         async function renderMembers() {
             const tbody = document.getElementById('membersTableBody');
             const data = await fetchMembers();
 
-            // Update stats
             document.getElementById('totalMembers').textContent = data.count || 0;
             const progress = Math.round(((data.count || 0) / 100) * 100);
             document.getElementById('roadProgress').textContent = progress + '%';
@@ -359,7 +533,7 @@
             tbody.innerHTML = data.members.map((member, index) => `
                 <tr>
                     <td>${index + 1}</td>
-                    <td><strong style="color:var(--white);">${member.name}</strong></td>
+                    <td><strong style="color:var(--text-primary);">${member.name}</strong></td>
                     <td><a href="mailto:${member.email}" style="color:var(--text-secondary); text-decoration:none;">${member.email}</a></td>
                     <td><span class="member-role">${member.role}</span></td>
                     <td>${member.timestamp ? new Date(member.timestamp).toLocaleDateString() : 'N/A'}</td>
@@ -372,12 +546,8 @@
             `).join('');
         }
 
-        // ==========================================
-        // DELETE SINGLE MEMBER
-        // ==========================================
         async function deleteMember(id) {
             if (!confirm('Are you sure you want to delete this member?')) return;
-
             try {
                 const response = await fetch(`${API_BASE}/delete-member`, {
                     method: 'POST',
@@ -385,7 +555,6 @@
                     body: JSON.stringify({ id })
                 });
                 const result = await response.json();
-
                 if (result.success) {
                     showToast('Member deleted successfully.', 'success');
                     renderMembers();
@@ -393,18 +562,13 @@
                     showToast('Failed to delete member.', 'error');
                 }
             } catch (error) {
-                console.error('Error:', error);
                 showToast('Error deleting member.', 'error');
             }
         }
 
-        // ==========================================
-        // DELETE ALL MEMBERS
-        // ==========================================
         async function confirmDeleteAll() {
             if (!confirm('⚠️ Are you sure you want to delete ALL members? This cannot be undone.')) return;
             if (!confirm('Really? All member data will be permanently removed.')) return;
-
             try {
                 const response = await fetch(`${API_BASE}/delete-member`, {
                     method: 'POST',
@@ -412,7 +576,6 @@
                     body: JSON.stringify({ deleteAll: true })
                 });
                 const result = await response.json();
-
                 if (result.success) {
                     showToast('All members deleted.', 'success');
                     renderMembers();
@@ -420,14 +583,10 @@
                     showToast('Failed to delete members.', 'error');
                 }
             } catch (error) {
-                console.error('Error:', error);
                 showToast('Error deleting members.', 'error');
             }
         }
 
-        // ==========================================
-        // EXPORT CSV
-        // ==========================================
         async function exportCSV() {
             try {
                 const data = await fetchMembers();
@@ -435,8 +594,6 @@
                     showToast('No members to export.', 'error');
                     return;
                 }
-
-                // Build CSV
                 const headers = ['Name', 'Email', 'Role', 'Message', 'Joined'];
                 const rows = data.members.map(m => [
                     `"${m.name}"`,
@@ -445,10 +602,7 @@
                     `"${m.message || ''}"`,
                     `"${m.timestamp ? new Date(m.timestamp).toLocaleString() : ''}"`
                 ]);
-
                 const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
-
-                // Download
                 const blob = new Blob([csv], { type: 'text/csv' });
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
@@ -456,24 +610,108 @@
                 a.download = `100HUB_Members_${new Date().toISOString().slice(0,10)}.csv`;
                 a.click();
                 URL.revokeObjectURL(url);
-
                 showToast('CSV exported successfully!', 'success');
             } catch (error) {
-                console.error('Error exporting CSV:', error);
                 showToast('Error exporting CSV.', 'error');
             }
         }
 
-        // ==========================================
-        // REFRESH
-        // ==========================================
         function refreshMembers() {
             renderMembers();
             showToast('Refreshed!', 'success');
         }
 
         // ==========================================
-        // TOAST NOTIFICATION
+        // PARTNERS
+        // ==========================================
+        async function loadPartners() {
+            try {
+                const response = await fetch(`${API_BASE}/partners`);
+                const data = await response.json();
+                const grid = document.getElementById('partnerGrid');
+
+                if (!data.logos || data.logos.length === 0) {
+                    grid.innerHTML = `
+                        <div class="empty-state" style="grid-column:1/-1;">
+                            <i class="fa-regular fa-image"></i>
+                            <p>No partners added yet.</p>
+                            <p style="font-size:12px;">Use the form below to add partner logos.</p>
+                        </div>
+                    `;
+                    document.getElementById('totalPartners').textContent = '0';
+                    return;
+                }
+
+                document.getElementById('totalPartners').textContent = data.logos.length;
+
+                grid.innerHTML = data.logos.map(logo => `
+                    <div class="partner-card">
+                        <img src="${logo.url}" alt="${logo.name}" onerror="this.style.display='none'" />
+                        <div class="partner-name">${logo.name}</div>
+                        <button class="remove-partner" onclick="deletePartner('${logo.id}')" title="Remove partner">
+                            <i class="fa-regular fa-trash-can"></i>
+                        </button>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading partners:', error);
+                showToast('Error loading partners.', 'error');
+            }
+        }
+
+        async function addPartner() {
+            const nameInput = document.getElementById('partnerName');
+            const urlInput = document.getElementById('partnerUrl');
+            const name = nameInput.value.trim();
+            const url = urlInput.value.trim();
+
+            if (!name || !url) {
+                showToast('Please enter both name and URL.', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/partners`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, url })
+                });
+                const result = await response.json();
+                if (result.success) {
+                    showToast('Partner added successfully!', 'success');
+                    nameInput.value = '';
+                    urlInput.value = '';
+                    loadPartners();
+                } else {
+                    showToast('Failed to add partner.', 'error');
+                }
+            } catch (error) {
+                showToast('Error adding partner.', 'error');
+            }
+        }
+
+        async function deletePartner(id) {
+            if (!confirm('Remove this partner logo?')) return;
+            try {
+                const response = await fetch(`${API_BASE}/partners`, {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id })
+                });
+                const result = await response.json();
+                if (result.success) {
+                    showToast('Partner removed.', 'success');
+                    loadPartners();
+                } else {
+                    showToast('Failed to remove partner.', 'error');
+                }
+            } catch (error) {
+                showToast('Error removing partner.', 'error');
+            }
+        }
+
+        // ==========================================
+        // TOAST
         // ==========================================
         function showToast(message, type = 'info') {
             const toast = document.getElementById('toast');
@@ -489,7 +727,10 @@
         // ==========================================
         // INIT
         // ==========================================
-        document.addEventListener('DOMContentLoaded', renderMembers);
+        document.addEventListener('DOMContentLoaded', function() {
+            renderMembers();
+            loadPartners();
+        });
 
         console.log('📊 100 HUB Dashboard loaded.');
     </script>

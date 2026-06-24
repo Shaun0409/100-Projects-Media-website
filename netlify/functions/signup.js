@@ -2,10 +2,8 @@
 const fs = require('fs');
 const path = require('path');
 
-// Path to the members.json file (in the root of your site)
 const MEMBERS_FILE = path.join(__dirname, '..', '..', 'members.json');
 
-// Read members from file
 function readMembers() {
     try {
         if (fs.existsSync(MEMBERS_FILE)) {
@@ -18,7 +16,6 @@ function readMembers() {
     return { members: [], count: 3 };
 }
 
-// Write members to file
 function writeMembers(data) {
     try {
         fs.writeFileSync(MEMBERS_FILE, JSON.stringify(data, null, 2));
@@ -30,7 +27,6 @@ function writeMembers(data) {
 }
 
 exports.handler = async function(event, context) {
-    // Only allow POST requests
     if (event.httpMethod !== 'POST') {
         return {
             statusCode: 405,
@@ -39,11 +35,9 @@ exports.handler = async function(event, context) {
     }
 
     try {
-        // Parse the request body
         const data = JSON.parse(event.body);
         const { name, email, role, message } = data;
 
-        // Validate
         if (!name || !email || !role) {
             return {
                 statusCode: 400,
@@ -51,10 +45,8 @@ exports.handler = async function(event, context) {
             };
         }
 
-        // Read current members
         const membersData = readMembers();
 
-        // Check if at 100 members
         if (membersData.count >= 100) {
             return {
                 statusCode: 400,
@@ -62,7 +54,6 @@ exports.handler = async function(event, context) {
             };
         }
 
-        // Check if email already exists
         const existingMember = membersData.members.find(m => m.email === email);
         if (existingMember) {
             return {
@@ -71,7 +62,6 @@ exports.handler = async function(event, context) {
             };
         }
 
-        // Add new member
         const newMember = {
             id: Date.now(),
             timestamp: new Date().toISOString(),
@@ -84,7 +74,6 @@ exports.handler = async function(event, context) {
         membersData.members.push(newMember);
         membersData.count += 1;
 
-        // Save to file
         const saved = writeMembers(membersData);
 
         if (!saved) {
@@ -94,7 +83,6 @@ exports.handler = async function(event, context) {
             };
         }
 
-        // Return success with updated count
         return {
             statusCode: 200,
             body: JSON.stringify({
