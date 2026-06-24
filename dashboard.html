@@ -456,11 +456,11 @@
                     💡 Upload images to Cloudinary, then copy the image URL and paste it here.
                 </p>
             </div>
-            
+
             <!-- Tab: Media Kit -->
             <div class="tab-content" id="tab-mediakit">
                 <h3 style="font-family:'Playfair Display',serif; font-size:20px; margin-bottom:16px;">Media Kit</h3>
-                <p style="color:var(--text-secondary); margin-bottom:20px;">Upload a PDF file that will be downloaded when users click "Request Media Kit" on the website.</p>
+                <p style="color:var(--text-secondary); margin-bottom:20px;">Upload your Media Kit PDF to Cloudinary or Google Drive, then paste the URL here.</p>
                 
                 <div class="mediakit-upload">
                     <div class="current-file">
@@ -469,24 +469,29 @@
                             <div class="file-name">Current Media Kit</div>
                             <div class="file-status" id="mediaKitStatus">Checking...</div>
                         </div>
-                        <button class="btn-outline" onclick="checkMediaKit()" style="margin-left:auto;">
-                            <i class="fa-solid fa-rotate"></i> Check
-                        </button>
+                        <div style="margin-left:auto; display:flex; gap:8px;">
+                            <button class="btn-outline" onclick="checkMediaKit()">
+                                <i class="fa-solid fa-rotate"></i> Check
+                            </button>
+                            <a id="mediaKitDownloadLink" href="#" target="_blank" style="display:none;" class="btn-primary">
+                                <i class="fa-solid fa-download"></i> Download
+                            </a>
+                        </div>
                     </div>
 
-                    <form id="mediaKitForm" class="upload-form">
-                        <input type="file" id="mediaKitFile" accept=".pdf" required />
+                    <form id="mediaKitForm" class="upload-form" style="margin-top:16px;">
+                        <input type="url" id="mediaKitUrl" placeholder="Paste Media Kit URL (Cloudinary, Google Drive, etc.)" style="flex:1; padding:10px; border:1px solid var(--gray-medium); border-radius:var(--radius-sm); min-width:250px;" required />
                         <button type="submit" class="btn-primary">
-                            <i class="fa-regular fa-upload"></i> Upload PDF
+                            <i class="fa-regular fa-upload"></i> Save URL
                         </button>
                     </form>
-                    <div class="upload-progress" id="mediaKitProgress">
-                        <span class="loader-small"></span>
-                        <span style="color:var(--text-secondary);">Uploading...</span>
+                    <div id="mediaKitProgress" style="display:none; margin-top:12px; padding:10px; background:var(--gray-light); border-radius:var(--radius-sm);">
+                        <span class="loader-small" style="display:inline-block; width:20px; height:20px; border:2px solid var(--gray-medium); border-top:2px solid var(--red); border-radius:50%; animation:spin 0.8s linear infinite; vertical-align:middle; margin-right:12px;"></span>
+                        <span style="color:var(--text-secondary);">Saving...</span>
                     </div>
                 </div>
                 <p style="font-size:12px; color:var(--text-muted); margin-top:12px;">
-                    💡 PDF will be available at: <strong>/media-kit.pdf</strong> on your website.
+                    💡 <strong>How to get a Media Kit URL:</strong> Upload your PDF to Cloudinary, Google Drive, or Dropbox, then copy the share link.
                 </p>
             </div>
         </div>
@@ -693,55 +698,24 @@
                 status.innerHTML = `<span style="color:#ff4444;">❌ Could not check</span>`;
             }
         }
-
-        document.getElementById('mediaKitForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const fileInput = document.getElementById('mediaKitFile');
-            const file = fileInput.files[0];
-            
-            if (!file) {
-                showToast('Please select a PDF file.', 'error');
-                return;
-            }
-            
-            if (file.type !== 'application/pdf') {
-                showToast('Please upload a PDF file.', 'error');
-                return;
-            }
-            
-            if (file.size > 10 * 1024 * 1024) {
-                showToast('File size must be under 10MB.', 'error');
-                return;
-            }
-            
-            const progress = document.getElementById('mediaKitProgress');
-            progress.style.display = 'block';
-            
-            const formData = new FormData();
-            formData.append('file', file);
-            
-            fetch('/.netlify/functions/upload-media-kit', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(result => {
-                progress.style.display = 'none';
-                if (result.success) {
-                    showToast('Media Kit uploaded successfully!', 'success');
-                    checkMediaKit();
-                    fileInput.value = '';
-                } else {
-                    showToast(result.error || 'Failed to upload.', 'error');
-                }
-            })
-            .catch(error => {
-                progress.style.display = 'none';
-                showToast('Error uploading.', 'error');
-                console.error('Upload error:', error);
+            document.getElementById('mediaKitBtn').addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Fetch the media kit URL from the backend
+                fetch('/.netlify/functions/upload-media-kit')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.url) {
+                            // Open the URL in a new tab (will download PDF)
+                            window.open(data.url, '_blank');
+                        } else {
+                            alert('📄 Media Kit coming soon. Please check back later.');
+                        }
+                    })
+                    .catch(() => {
+                        alert('📄 Media Kit coming soon. Please check back later.');
+                    });
             });
-        });
 
         // ==========================================
         // TOAST

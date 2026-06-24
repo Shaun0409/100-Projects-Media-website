@@ -1,37 +1,15 @@
 // netlify/functions/partners.js
-// Manages partner logos
+// Manages partners via Google Apps Script API
 
-const fs = require('fs');
-const path = require('path');
-const PARTNERS_FILE = path.join(__dirname, '..', '..', 'partners.json');
-
-function readPartners() {
-    try {
-        if (fs.existsSync(PARTNERS_FILE)) {
-            const data = fs.readFileSync(PARTNERS_FILE, 'utf8');
-            return JSON.parse(data);
-        }
-    } catch (error) {
-        console.error('Error reading partners file:', error);
-    }
-    return { logos: [] };
-}
-
-function writePartners(data) {
-    try {
-        fs.writeFileSync(PARTNERS_FILE, JSON.stringify(data, null, 2));
-        return true;
-    } catch (error) {
-        console.error('Error writing partners file:', error);
-        return false;
-    }
-}
+const API_BASE = 'https://script.google.com/macros/s/AKfycbzr0Z1TpP1VzkUOTwM39ef49bdL8Fspj9V7QPROuG0tDYwGB7mS7-__V8OfFx6fDKt2KQ/exec';
 
 exports.handler = async function(event, context) {
     // GET - fetch all partners
     if (event.httpMethod === 'GET') {
         try {
-            const data = readPartners();
+            const response = await fetch(`${API_BASE}?action=getPartners`);
+            const data = await response.json();
+            
             return {
                 statusCode: 200,
                 body: JSON.stringify(data)
@@ -57,17 +35,31 @@ exports.handler = async function(event, context) {
                 };
             }
 
-            const partnersData = readPartners();
-            partnersData.logos.push({ 
-                id: Date.now() + '_' + Math.random().toString(36).substr(2, 4),
-                url: url,
-                name: name
+            const response = await fetch(`${API_BASE}?action=addPartner`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, url })
             });
-            writePartners(partnersData);
+
+            const result = await response.json();
+
+            if (result.error) {
+                return {
+                    statusCode: 400,
+                    body: JSON.stringify({ error: result.error })
+                };
+            }
+
+            // Get updated list
+            const getResponse = await fetch(`${API_BASE}?action=getPartners`);
+            const getData = await getResponse.json();
 
             return {
                 statusCode: 200,
-                body: JSON.stringify({ success: true, logos: partnersData.logos })
+                body: JSON.stringify({
+                    success: true,
+                    logos: getData.logos || []
+                })
             };
         } catch (error) {
             console.error('Add partner error:', error);
@@ -82,7 +74,28 @@ exports.handler = async function(event, context) {
     if (event.httpMethod === 'DELETE') {
         try {
             const data = JSON.parse(event.body);
-            const { id } = data;
+            const { id, deleteAll } = data;
+
+            if (deleteAll) {
+                // Clear all partners
+                const getResponse = await fetch(`${API_BASE}?action=getPartners`);
+                const getData = await getResponse.json();
+                
+                if (getData.logos && Array.isArray(getData.logos)) {
+                    for (const logo of getData.logos) {
+                        await fetch(`${API_BASE}?action=deletePartner`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ name: logo.name })
+                        });
+                    }
+                }
+                
+                return {
+                    statusCode: 200,
+                    body: JSON.stringify({ success: true, logos: [] })
+                };
+            }
 
             if (!id) {
                 return {
@@ -91,22 +104,43 @@ exports.handler = async function(event, context) {
                 };
             }
 
-            const partnersData = readPartners();
-            const initialLength = partnersData.logos.length;
-            partnersData.logos = partnersData.logos.filter(l => l.id !== id);
+            // Get partners to find the name
+            const getResponse = await fetch(`${API_BASE}?action=getPartners`);
+            const getData = await getResponse.json();
             
-            if (partnersData.logos.length === initialLength) {
+            const partner = (getData.logos || []).find(p => p.id === id || p.id === parseInt(id));
+            if (!partner) {
                 return {
                     statusCode: 404,
                     body: JSON.stringify({ error: 'Partner not found' })
                 };
             }
-            
-            writePartners(partnersData);
+
+            const response = await fetch(`${API_BASE}?action=deletePartner`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name: partner.name })
+            });
+
+            const result = await response.json();
+
+            if (result.error) {
+                return {
+                    statusCode: 400,
+                    body: JSON.stringify({ error: result.error })
+                };
+            }
+
+            // Get updated list
+            const refreshResponse = await fetch(`${API_BASE}?action=getPartners`);
+            const refreshData = await refreshResponse.json();
 
             return {
                 statusCode: 200,
-                body: JSON.stringify({ success: true, logos: partnersData.logos })
+                body: JSON.stringify({
+                    success: true,
+                    logos: refreshData.logos || []
+                })
             };
         } catch (error) {
             console.error('Delete partner error:', error);
