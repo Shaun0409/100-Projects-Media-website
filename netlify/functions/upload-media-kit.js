@@ -1,3 +1,6 @@
+// netlify/functions/upload-media-kit.js
+// Note: Netlify Functions have a 6MB payload limit
+
 const fs = require('fs');
 const path = require('path');
 
@@ -32,13 +35,12 @@ exports.handler = async function(event, context) {
                         contentStart = true;
                         continue;
                     }
-                    if (contentStart) {
+                    if (contentStart && !line.includes('filename=') && !line.includes('Content-Type') && !line.includes('Content-Disposition')) {
                         contentLines.push(line);
                     }
                 }
                 
                 const content = contentLines.join('');
-                // Remove trailing boundary markers
                 const cleanContent = content.replace(/--$/, '').trim();
                 if (cleanContent) {
                     fileData = cleanContent;
@@ -49,7 +51,7 @@ exports.handler = async function(event, context) {
         }
 
         if (!fileFound || !fileData) {
-            return { statusCode: 400, body: JSON.stringify({ error: 'No file uploaded' }) };
+            return { statusCode: 400, body: JSON.stringify({ error: 'No file uploaded or file is empty' }) };
         }
 
         // Write the file

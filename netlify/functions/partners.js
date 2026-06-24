@@ -3,7 +3,7 @@
 
 // Replace with your Cloudinary cloud name
 const CLOUDINARY_CLOUD_NAME = 'ddks5csyg';
-const CLOUDINARY_FOLDER = '100'; // Folder in Cloudinary Media Library
+const CLOUDINARY_FOLDER = 'partners';
 
 exports.handler = async function(event, context) {
     if (event.httpMethod !== 'GET') {
@@ -18,8 +18,16 @@ exports.handler = async function(event, context) {
         const url = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/resources/image/upload/${CLOUDINARY_FOLDER}`;
         const response = await fetch(url);
 
+        // If Cloudinary returns an error, return empty array (not 500)
         if (!response.ok) {
-            throw new Error('Failed to fetch from Cloudinary');
+            console.log('Cloudinary error:', response.status);
+            return {
+                statusCode: 200,
+                body: JSON.stringify({ 
+                    logos: [],
+                    message: 'No partners added yet. Upload logos to Cloudinary.'
+                })
+            };
         }
 
         const data = await response.json();
@@ -38,11 +46,12 @@ exports.handler = async function(event, context) {
 
     } catch (error) {
         console.error('Partners error:', error);
+        // Return empty array instead of 500
         return {
-            statusCode: 500,
+            statusCode: 200,
             body: JSON.stringify({ 
                 logos: [],
-                error: 'Failed to fetch partner logos'
+                message: 'Could not fetch partners'
             })
         };
     }
