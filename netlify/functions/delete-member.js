@@ -1,14 +1,38 @@
 // netlify/functions/delete-member.js
-// Deletes a member via Google Apps Script API
+// Deletes a member from members.json
 
-// ✅ REPLACE THIS WITH YOUR ACTUAL DEPLOYMENT ID
-const API_BASE = 'https://script.google.com/macros/s/AKfycbyM7LSIRLazzgxXw18r6voB3IyoO6aHBdq_Auq0SOdbWgEvHocrze21CBBSTYptdi4czg/exec';
+const fs = require('fs');
+const path = require('path');
+
+const MEMBERS_FILE = path.join(__dirname, '..', '..', 'members.json');
+
+function readMembers() {
+    try {
+        if (fs.existsSync(MEMBERS_FILE)) {
+            const data = fs.readFileSync(MEMBERS_FILE, 'utf8');
+            return JSON.parse(data);
+        }
+    } catch (error) {
+        console.error('Error reading members file:', error);
+    }
+    return { members: [], count: 0 };
+}
+
+function writeMembers(data) {
+    try {
+        fs.writeFileSync(MEMBERS_FILE, JSON.stringify(data, null, 2));
+        return true;
+    } catch (error) {
+        console.error('Error writing members file:', error);
+        return false;
+    }
+}
 
 exports.handler = async function(event, context) {
     const headers = {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Headers': 'Content-Type',
-        'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS'
+        'Access-Control-Allow-Methods': 'POST, OPTIONS'
     };
 
     if (event.httpMethod === 'OPTIONS') {
@@ -26,7 +50,6 @@ exports.handler = async function(event, context) {
     try {
         const { id } = JSON.parse(event.body);
 
-        // Check if it's a default owner (can't delete owners)
         if (id && id.startsWith('owner_')) {
             return {
                 statusCode: 400,
@@ -35,11 +58,9 @@ exports.handler = async function(event, context) {
             };
         }
 
-        // Get all members to find the email
-        const getResponse = await fetch(`${API_BASE}?action=getMembers`);
-        const data = await getResponse.json();
+        const membersData = readMembers();
 
-        if (!data.members || !Array.isArray(data.members)) {
+        if (!membersData.members || membersData.members.length === 0) {
             return {
                 statusCode: 404,
                 headers,
@@ -47,9 +68,8 @@ exports.handler = async function(event, context) {
             };
         }
 
-        // Find member by ID
-        const member = data.members.find(m => m.id === id || m.id === parseInt(id));
-        if (!member) {
+        const memberToDelete = membersData.members.find(m => m.id === id);
+        if (!memberToDelete) {
             return {
                 statusCode: 404,
                 headers,
@@ -57,32 +77,11 @@ exports.handler = async function(event, context) {
             };
         }
 
-        // Check if it's a default owner by email
-        const ownerEmails = ['khocypixs@gmail.com', 'mpilo1@gmail.com', 'shaun@example.com'];
-        if (ownerEmails.includes(member.email)) {
-            return {
-                statusCode: 400,
-                headers,
-                body: JSON.stringify({ error: 'Cannot delete default owners' })
-            };
-        }
+        // Filter out the member
+        membersData.members = membersData.members.filter(m => m.id !== id);
+        membersData.count = membersData.members.length;
 
-        // Delete the member
-        const response = await fetch(`${API_BASE}?action=deleteMember`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email: member.email })
-        });
-
-        const result = await response.json();
-
-        if (result.error) {
-            return {
-                statusCode: 400,
-                headers,
-                body: JSON.stringify({ error: result.error })
-            };
-        }
+        writeMembers(membersData);
 
         return {
             statusCode: 200,

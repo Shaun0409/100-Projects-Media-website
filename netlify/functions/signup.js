@@ -1,85 +1,118 @@
 // netlify/functions/signup.js
-// Adds a member via Google Apps Script API
+// Saves member data to members.json
 
-// ✅ REPLACE THIS WITH YOUR ACTUAL DEPLOYMENT ID
-const API_BASE = 'https://script.google.com/macros/s/AKfycbyM7LSIRLazzgxXw18r6voB3IyoO6aHBdq_Auq0SOdbWgEvHocrze21CBBSTYptdi4czg/exec';
+const fs = require('fs');
+const path = require('path');
+
+// Path to members.json
+const MEMBERS_FILE = path.join(__dirname, '..', '..', 'members.json');
+
+// Helper to read members
+function readMembers() {
+    try {
+        if (fs.existsSync(MEMBERS_FILE)) {
+            const data = fs.readFileSync(MEMBERS_FILE, 'utf8');
+            return JSON.parse(data);
+        }
+    } catch (error) {
+        console.error('Error reading members file:', error);
+    }
+    return { members: [], count: 3 };
+}
+
+// Helper to write members
+function writeMembers(data) {
+    try {
+        fs.writeFileSync(MEMBERS_FILE, JSON.stringify(data, null, 2));
+        return true;
+    } catch (error) {
+        console.error('Error writing members file:', error);
+        return false;
+    }
+}
 
 exports.handler = async function(event, context) {
-    // Allow CORS
     const headers = {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Headers': 'Content-Type',
-        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS'
+        'Access-Control-Allow-Methods': 'POST, OPTIONS'
     };
 
-    // Handle preflight OPTIONS request
     if (event.httpMethod === 'OPTIONS') {
-        return {
-            statusCode: 204,
-            headers: headers,
-            body: ''
-        };
+        return { statusCode: 204, headers, body: '' };
     }
 
     if (event.httpMethod !== 'POST') {
         return {
             statusCode: 405,
-            headers: headers,
+            headers,
             body: JSON.stringify({ error: 'Method not allowed' })
         };
     }
 
     try {
-        // Parse the request body
-        let body;
-        try {
-            body = JSON.parse(event.body);
-        } catch (e) {
-            return {
-                statusCode: 400,
-                headers: headers,
-                body: JSON.stringify({ error: 'Invalid JSON body' })
-            };
-        }
-
-        const { name, email, role, message } = body;
+        const { name, email, role, message } = JSON.parse(event.body);
 
         if (!name || !email || !role) {
             return {
                 statusCode: 400,
-                headers: headers,
+                headers,
                 body: JSON.stringify({ error: 'Name, email, and role are required' })
             };
         }
 
-        // Call Google Apps Script API
-        const response = await fetch(`${API_BASE}?action=addMember`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name, email, role, message: message || '' })
-        });
+        // Read existing members
+        const membersData = readMembers();
 
-        const data = await response.json();
-
-        if (data.error) {
+        // Check if already 100 members
+        if (membersData.count >= 100) {
             return {
                 statusCode: 400,
-                headers: headers,
-                body: JSON.stringify({ error: data.error })
+                headers,
+                body: JSON.stringify({ error: 'Community is full! We\'ve reached 100 members.' })
             };
         }
 
-        // Get updated count
-        const countResponse = await fetch(`${API_BASE}?action=getMembers`);
-        const countData = await countResponse.json();
-        const count = countData.members ? countData.members.length + 3 : 3;
+        // Check if email already exists
+        const existingMember = membersData.members.find(m => m.email === email);
+        if (existingMember) {
+            return {
+                statusCode: 400,
+                headers,
+                body: JSON.stringify({ error: 'This email is already registered.' })
+            };
+        }
+
+        // Add new member
+        const newMember = {
+            id: 'member_' + Date.now(),
+            timestamp: new Date().toISOString(),
+            name: name,
+            email: email,
+            role: role,
+            message: message || ''
+        };
+
+        membersData.members.push(newMember);
+        membersData.count += 1;
+
+        // Save to file
+        const saved = writeMembers(membersData);
+
+        if (!saved) {
+            return {
+                statusCode: 500,
+                headers,
+                body: JSON.stringify({ error: 'Failed to save member data' })
+            };
+        }
 
         return {
             statusCode: 200,
-            headers: headers,
+            headers,
             body: JSON.stringify({
                 success: true,
-                count: count,
+                count: membersData.count,
                 message: 'Successfully joined the community!'
             })
         };
@@ -87,7 +120,7 @@ exports.handler = async function(event, context) {
         console.error('Signup error:', error);
         return {
             statusCode: 500,
-            headers: headers,
+            headers,
             body: JSON.stringify({ error: 'Failed to save member data: ' + error.message })
         };
     }

@@ -1,8 +1,32 @@
 // netlify/functions/upload-media-kit.js
-// Manages media kit via Google Apps Script API
+// Manages media kit via mediakit.json
 
-// ✅ REPLACE THIS WITH YOUR ACTUAL DEPLOYMENT ID
-const API_BASE = 'https://script.google.com/macros/s/AKfycbyM7LSIRLazzgxXw18r6voB3IyoO6aHBdq_Auq0SOdbWgEvHocrze21CBBSTYptdi4czg/exec';
+const fs = require('fs');
+const path = require('path');
+
+const MEDIAKIT_FILE = path.join(__dirname, '..', '..', 'mediakit.json');
+
+function readMediaKit() {
+    try {
+        if (fs.existsSync(MEDIAKIT_FILE)) {
+            const data = fs.readFileSync(MEDIAKIT_FILE, 'utf8');
+            return JSON.parse(data);
+        }
+    } catch (error) {
+        console.error('Error reading media kit file:', error);
+    }
+    return { url: '' };
+}
+
+function writeMediaKit(data) {
+    try {
+        fs.writeFileSync(MEDIAKIT_FILE, JSON.stringify(data, null, 2));
+        return true;
+    } catch (error) {
+        console.error('Error writing media kit file:', error);
+        return false;
+    }
+}
 
 exports.handler = async function(event, context) {
     const headers = {
@@ -18,9 +42,7 @@ exports.handler = async function(event, context) {
     // GET - fetch media kit URL
     if (event.httpMethod === 'GET') {
         try {
-            const response = await fetch(`${API_BASE}?action=getMediaKit`);
-            const data = await response.json();
-
+            const data = readMediaKit();
             if (data.url) {
                 return {
                     statusCode: 200,
@@ -35,6 +57,7 @@ exports.handler = async function(event, context) {
                 };
             }
         } catch (error) {
+            console.error('GET media kit error:', error);
             return {
                 statusCode: 500,
                 headers,
@@ -46,8 +69,7 @@ exports.handler = async function(event, context) {
     // POST - update media kit URL
     if (event.httpMethod === 'POST') {
         try {
-            const data = JSON.parse(event.body);
-            const { url } = data;
+            const { url } = JSON.parse(event.body);
 
             if (!url) {
                 return {
@@ -68,21 +90,9 @@ exports.handler = async function(event, context) {
                 };
             }
 
-            const response = await fetch(`${API_BASE}?action=updateMediaKit`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ url })
-            });
-
-            const result = await response.json();
-
-            if (result.error) {
-                return {
-                    statusCode: 400,
-                    headers,
-                    body: JSON.stringify({ error: result.error })
-                };
-            }
+            const mediaKitData = readMediaKit();
+            mediaKitData.url = url;
+            writeMediaKit(mediaKitData);
 
             return {
                 statusCode: 200,
@@ -94,7 +104,7 @@ exports.handler = async function(event, context) {
                 })
             };
         } catch (error) {
-            console.error('Media kit error:', error);
+            console.error('POST media kit error:', error);
             return {
                 statusCode: 500,
                 headers,

@@ -1,9 +1,12 @@
 // netlify/functions/members.js
-// Fetches members from Google Apps Script API
+// Reads members from members.json
 
-// ✅ REPLACE THIS WITH YOUR ACTUAL DEPLOYMENT ID
-const API_BASE = 'https://script.google.com/macros/s/AKfycbyM7LSIRLazzgxXw18r6voB3IyoO6aHBdq_Auq0SOdbWgEvHocrze21CBBSTYptdi4czg/exec';
+const fs = require('fs');
+const path = require('path');
 
+const MEMBERS_FILE = path.join(__dirname, '..', '..', 'members.json');
+
+// Default owners
 const DEFAULT_OWNERS = [
     {
         id: 'owner_1',
@@ -31,11 +34,23 @@ const DEFAULT_OWNERS = [
     }
 ];
 
+function readMembers() {
+    try {
+        if (fs.existsSync(MEMBERS_FILE)) {
+            const data = fs.readFileSync(MEMBERS_FILE, 'utf8');
+            return JSON.parse(data);
+        }
+    } catch (error) {
+        console.error('Error reading members file:', error);
+    }
+    return { members: [], count: 0 };
+}
+
 exports.handler = async function(event, context) {
     const headers = {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Headers': 'Content-Type',
-        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS'
+        'Access-Control-Allow-Methods': 'GET, OPTIONS'
     };
 
     if (event.httpMethod === 'OPTIONS') {
@@ -51,24 +66,14 @@ exports.handler = async function(event, context) {
     }
 
     try {
-        const response = await fetch(`${API_BASE}?action=getMembers`);
-        const data = await response.json();
-
-        // Combine owners with sheet members
+        const data = readMembers();
         const allMembers = [...DEFAULT_OWNERS];
         const existingEmails = new Set(DEFAULT_OWNERS.map(m => m.email.toLowerCase()));
 
         if (data.members && Array.isArray(data.members)) {
             data.members.forEach(m => {
                 if (m.email && !existingEmails.has(m.email.toLowerCase())) {
-                    allMembers.push({
-                        id: m.id || 'member_' + Date.now(),
-                        timestamp: m.timestamp || new Date().toISOString(),
-                        name: m.name || 'Unknown',
-                        email: m.email || '',
-                        role: m.role || 'Member',
-                        message: m.message || ''
-                    });
+                    allMembers.push(m);
                     existingEmails.add(m.email.toLowerCase());
                 }
             });
