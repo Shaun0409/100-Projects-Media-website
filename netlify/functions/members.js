@@ -4,7 +4,6 @@
 // Replace with your Sheet.best connection URL
 const SHEET_BEST_API = 'https://api.sheetbest.com/sheets/ea89e6d2-3087-4506-ab5b-31e9802bcd62';
 
-// Default owners (first 3 members)
 const DEFAULT_OWNERS = [
     {
         id: 'owner_1',
@@ -41,36 +40,36 @@ exports.handler = async function(event, context) {
     }
 
     try {
-        const response = await fetch(SHEET_BEST_API);
+        let sheetMembers = [];
         
-        if (!response.ok) {
-            // If Sheet.best fails, return default owners
-            return {
-                statusCode: 200,
-                body: JSON.stringify({
-                    members: DEFAULT_OWNERS,
-                    count: DEFAULT_OWNERS.length
-                })
-            };
+        try {
+            const response = await fetch(SHEET_BEST_API);
+            if (response.ok) {
+                sheetMembers = await response.json();
+                // Sheet.best returns an array, ensure it's an array
+                if (!Array.isArray(sheetMembers)) {
+                    sheetMembers = [];
+                }
+            }
+        } catch (e) {
+            console.log('Could not fetch from Sheet.best:', e.message);
         }
 
-        const members = await response.json();
-        
-        // Combine default owners with members from Google Sheets
-        // Filter out duplicates (by email)
+        // Merge: Start with default owners, then add sheet members (deduplicate by email)
         const allMembers = [...DEFAULT_OWNERS];
-        const existingEmails = new Set(DEFAULT_OWNERS.map(m => m.email));
+        const existingEmails = new Set(DEFAULT_OWNERS.map(m => m.email.toLowerCase()));
         
-        (members || []).forEach(m => {
-            if (!existingEmails.has(m.email)) {
+        sheetMembers.forEach(m => {
+            if (m.email && !existingEmails.has(m.email.toLowerCase())) {
                 allMembers.push({
-                    id: m.id || 'member_' + Date.now(),
+                    id: m.id || 'member_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
                     timestamp: m.timestamp || new Date().toISOString(),
                     name: m.name || 'Unknown',
                     email: m.email || '',
                     role: m.role || 'Member',
                     message: m.message || ''
                 });
+                existingEmails.add(m.email.toLowerCase());
             }
         });
 
@@ -84,12 +83,12 @@ exports.handler = async function(event, context) {
 
     } catch (error) {
         console.error('Members error:', error);
-        // Return default owners even on error
         return {
             statusCode: 200,
             body: JSON.stringify({
                 members: DEFAULT_OWNERS,
-                count: DEFAULT_OWNERS.length
+                count: DEFAULT_OWNERS.length,
+                error: 'Could not fetch members from Google Sheets, showing default owners'
             })
         };
     }

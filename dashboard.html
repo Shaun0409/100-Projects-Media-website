@@ -432,9 +432,9 @@
                     <button class="btn-outline" onclick="loadPartners()">
                         <i class="fa-solid fa-rotate"></i> Refresh
                     </button>
-                    <a href="https://cloudinary.com/console/media_library/folder/partners" target="_blank" class="btn-outline">
-                        <i class="fa-regular fa-cloud"></i> Manage in Cloudinary
-                    </a>
+                    <button class="btn-outline" onclick="clearAllPartners()">
+                        <i class="fa-solid fa-trash"></i> Clear All
+                    </button>
                 </div>
 
                 <div class="partner-grid" id="partnerGrid">
@@ -444,20 +444,19 @@
                     </div>
                 </div>
 
-                <div style="background:var(--gray-light); border-radius:var(--radius-sm); padding:20px; margin-top:20px;">
-                    <h4 style="font-size:14px; margin-bottom:8px;">📸 How to Add Partner Logos</h4>
-                    <ol style="font-size:13px; color:var(--text-secondary); line-height:1.8; padding-left:20px;">
-                        <li>Go to <a href="https://cloudinary.com/console/media_library/folder/partners" target="_blank" style="color:var(--red);">Cloudinary Media Library</a></li>
-                        <li>Create a folder called <strong>partners</strong> (if it doesn't exist)</li>
-                        <li>Upload your partner logo images (PNG, JPG, or JPEG)</li>
-                        <li>Refresh this page — logos will appear automatically</li>
-                        <li>To remove a logo, delete it from Cloudinary</li>
-                    </ol>
-                    <p style="font-size:12px; color:var(--text-muted); margin-top:8px;">
-                        💡 Cloudinary automatically optimizes and serves images via CDN.
-                    </p>
+                <h3 style="font-family:'Playfair Display',serif; font-size:20px; margin-top:30px; margin-bottom:16px;">Add New Partner</h3>
+                <div class="add-partner-form">
+                    <input type="text" id="partnerName" placeholder="Partner Name (e.g., Adidas)" />
+                    <input type="url" id="partnerUrl" placeholder="Logo URL (Cloudinary or image URL)" />
+                    <button class="btn-primary" onclick="addPartner()">
+                        <i class="fa-regular fa-plus"></i> Add Partner
+                    </button>
                 </div>
+                <p style="font-size:12px; color:var(--text-muted); margin-top:8px;">
+                    💡 Upload images to Cloudinary, then copy the image URL and paste it here.
+                </p>
             </div>
+            
             <!-- Tab: Media Kit -->
             <div class="tab-content" id="tab-mediakit">
                 <h3 style="font-family:'Playfair Display',serif; font-size:20px; margin-bottom:16px;">Media Kit</h3>

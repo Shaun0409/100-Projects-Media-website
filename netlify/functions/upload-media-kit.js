@@ -1,5 +1,5 @@
 // netlify/functions/upload-media-kit.js
-// Note: Netlify Functions have a 6MB payload limit
+// Uploads a PDF file to the server
 
 const fs = require('fs');
 const path = require('path');
@@ -10,40 +10,42 @@ exports.handler = async function(event, context) {
     }
 
     try {
-        // Parse multipart form data
+        // Parse the form data using a simpler approach
+        const body = event.body;
         const contentType = event.headers['content-type'] || '';
         const boundary = contentType.split('boundary=')[1];
-        
+
         if (!boundary) {
             return { statusCode: 400, body: JSON.stringify({ error: 'Invalid form data' }) };
         }
 
-        const body = event.body;
+        // Split the body by boundary
         const parts = body.split(`--${boundary}`);
-
         let fileData = '';
         let fileFound = false;
 
         for (const part of parts) {
+            // Look for filename in the part
             if (part.includes('filename=')) {
-                const lines = part.split('\r\n');
-                let contentStart = false;
-                let contentLines = [];
+                // Extract the content (everything after the first empty line)
+                const lines = part.split('\n');
+                let inContent = false;
+                let content = '';
                 
                 for (const line of lines) {
-                    if (line === '') {
-                        contentStart = true;
+                    if (line.trim() === '') {
+                        inContent = true;
                         continue;
                     }
-                    if (contentStart && !line.includes('filename=') && !line.includes('Content-Type') && !line.includes('Content-Disposition')) {
-                        contentLines.push(line);
+                    if (inContent) {
+                        content += line + '\n';
                     }
                 }
                 
-                const content = contentLines.join('');
-                const cleanContent = content.replace(/--$/, '').trim();
-                if (cleanContent) {
-                    fileData = cleanContent;
+                // Clean up the content
+                content = content.trim();
+                if (content.length > 0) {
+                    fileData = content;
                     fileFound = true;
                     break;
                 }
@@ -51,23 +53,39 @@ exports.handler = async function(event, context) {
         }
 
         if (!fileFound || !fileData) {
-            return { statusCode: 400, body: JSON.stringify({ error: 'No file uploaded or file is empty' }) };
+            return { 
+                statusCode: 400, 
+                body: JSON.stringify({ error: 'No file uploaded or file is empty. Please select a valid PDF file.' }) 
+            };
         }
 
-        // Write the file
+        // Determine file path
         const filePath = path.join(__dirname, '..', '..', 'media-kit.pdf');
+        
+        // Write the file
         fs.writeFileSync(filePath, fileData, 'base64');
+
+        // Verify file was written
+        if (!fs.existsSync(filePath)) {
+            throw new Error('Failed to write file');
+        }
 
         return {
             statusCode: 200,
-            body: JSON.stringify({ success: true, message: 'Media Kit uploaded successfully' })
+            body: JSON.stringify({ 
+                success: true, 
+                message: 'Media Kit uploaded successfully!',
+                path: '/media-kit.pdf'
+            })
         };
 
     } catch (error) {
         console.error('Upload error:', error);
         return {
             statusCode: 500,
-            body: JSON.stringify({ error: 'Failed to upload file: ' + error.message })
+            body: JSON.stringify({ 
+                error: 'Failed to upload file: ' + error.message 
+            })
         };
     }
 };
