@@ -58,9 +58,9 @@ exports.handler = async function(event, context) {
         if (role) memberToUpdate.role = role;
         if (skills) memberToUpdate.skills = skills;
 
-        // Update in Sheet.best
+        // Update in Sheet.best - using PUT method
         const updateResponse = await fetch(`${SHEET_BEST_API}/${memberToUpdate.id}`, {
-            method: 'PUT',
+            method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(memberToUpdate)
         });
