@@ -1,8 +1,12 @@
 // netlify/functions/members.js
 // Fetches members from Google Sheets via Sheet.best
 
-// ⚠️ REPLACE WITH YOUR SHEET.BEST URL
 const SHEET_BEST_API = 'https://api.sheetbest.com/sheets/7fb06936-5f4f-4ca5-bb81-b4e8af870b57/tabs/Members';
+
+// Must match the same function in signup.js
+function emailToId(email) {
+    return 'member_' + email.toLowerCase().replace(/[^a-z0-9]/g, '');
+}
 
 const DEFAULT_OWNERS = [
     {
@@ -59,7 +63,7 @@ exports.handler = async function(event, context) {
     try {
         const response = await fetch(SHEET_BEST_API);
         let sheetMembers = [];
-        
+
         if (response.ok) {
             const data = await response.json();
             if (Array.isArray(data)) {
@@ -73,31 +77,35 @@ exports.handler = async function(event, context) {
         const page = parseInt(params.page) || 0;
         const limit = parseInt(params.limit) || 100;
 
-        // Combine owners with sheet members
-        let allMembers = [...DEFAULT_OWNERS];
+        // Combine owners with sheet members, deduplicating by email
         const existingEmails = new Set(DEFAULT_OWNERS.map(m => m.email.toLowerCase()));
+        let allMembers = [...DEFAULT_OWNERS];
 
         sheetMembers.forEach(m => {
-            if (m.email && !existingEmails.has(m.email.toLowerCase())) {
-                allMembers.push({
-                    id: m.id || 'member_' + Date.now(),
-                    timestamp: m.timestamp || new Date().toISOString(),
-                    name: m.name || 'Unknown',
-                    email: m.email || '',
-                    role: m.role || 'Member',
-                    skills: m.skills || '',
-                    website: m.website || '',
-                    image1: m.image1 || '',
-                    image2: m.image2 || '',
-                    image3: m.image3 || '',
-                    status: m.status || 'pending',
-                    selectedImage: m.selectedImage || ''
-                });
-                existingEmails.add(m.email.toLowerCase());
-            }
+            if (!m.email) return;
+            if (existingEmails.has(m.email.toLowerCase())) return;
+
+            existingEmails.add(m.email.toLowerCase());
+
+            allMembers.push({
+                // ✅ Use stable email-derived ID, falling back to whatever's in the sheet
+                // For members signed up before the fix, id may be empty — email-derived is the fallback
+                id: m.id || emailToId(m.email),
+                email: m.email,
+                timestamp: m.timestamp || new Date().toISOString(),
+                name: m.name || 'Unknown',
+                role: m.role || 'Member',
+                skills: m.skills || '',
+                website: m.website || '',
+                image1: m.image1 || '',
+                image2: m.image2 || '',
+                image3: m.image3 || '',
+                status: m.status || 'pending',
+                selectedImage: m.selectedImage || ''
+            });
         });
 
-        // Filter by status if specified
+        // Filter by status
         let filteredMembers = allMembers;
         if (statusFilter !== 'all') {
             filteredMembers = allMembers.filter(m => m.status === statusFilter);
@@ -108,10 +116,8 @@ exports.handler = async function(event, context) {
 
         // Paginate
         const start = page * limit;
-        const end = start + limit;
-        const paginatedMembers = filteredMembers.slice(start, end);
+        const paginatedMembers = filteredMembers.slice(start, start + limit);
 
-        // Count accepted members for "Road to 100"
         const acceptedCount = allMembers.filter(m => m.status === 'accepted').length;
 
         return {
@@ -135,7 +141,9 @@ exports.handler = async function(event, context) {
                 members: DEFAULT_OWNERS,
                 count: DEFAULT_OWNERS.length,
                 total: DEFAULT_OWNERS.length,
-                accepted: DEFAULT_OWNERS.length
+                accepted: DEFAULT_OWNERS.length,
+                pending: 0,
+                declined: 0
             })
         };
     }

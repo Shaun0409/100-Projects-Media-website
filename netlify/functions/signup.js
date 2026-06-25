@@ -1,8 +1,13 @@
 // netlify/functions/signup.js
 // Saves member data to Google Sheets via Sheet.best
 
-// ⚠️ REPLACE THIS WITH YOUR ACTUAL SHEET.BEST URL
 const SHEET_BEST_API = 'https://api.sheetbest.com/sheets/7fb06936-5f4f-4ca5-bb81-b4e8af870b57/tabs/Members';
+
+// Generate a stable ID from email so it never changes between reads
+function emailToId(email) {
+    // e.g. "jane.doe@gmail.com" → "member_janedoegmailcom"
+    return 'member_' + email.toLowerCase().replace(/[^a-z0-9]/g, '');
+}
 
 exports.handler = async function(event, context) {
     const headers = {
@@ -39,7 +44,9 @@ exports.handler = async function(event, context) {
         if (checkResponse.ok) {
             const existingMembers = await checkResponse.json();
             if (Array.isArray(existingMembers)) {
-                const emailExists = existingMembers.some(m => m.email === email);
+                const emailExists = existingMembers.some(
+                    m => m.email && m.email.toLowerCase() === email.toLowerCase()
+                );
                 if (emailExists) {
                     return {
                         statusCode: 400,
@@ -51,10 +58,12 @@ exports.handler = async function(event, context) {
         }
 
         // Save to Google Sheets via Sheet.best
+        // ✅ Now includes a stable `id` column derived from email
         const response = await fetch(SHEET_BEST_API, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
+                id: emailToId(email),          // ← stable, unique, derived from email
                 timestamp: new Date().toISOString(),
                 name: name,
                 email: email,
@@ -70,7 +79,8 @@ exports.handler = async function(event, context) {
         });
 
         if (!response.ok) {
-            throw new Error('Failed to save to Google Sheets');
+            const errText = await response.text();
+            throw new Error('Failed to save to Google Sheets: ' + errText);
         }
 
         return {

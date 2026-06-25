@@ -901,36 +901,26 @@
             });
         }
 
-                // ==========================================
-                // UPDATE MEMBER - DIRECT SHEET.BEST API
-                // ==========================================
-        async function updateMemberDirect(id, updates) {
+        // ==========================================
+        // UPDATE MEMBER - via Netlify function
+        // ==========================================
+        async function updateMemberDirect(email, updates) {
             try {
-                // Use Sheet.best's filtered PATCH: /columnName/*value*
-                // This finds the row where id == the member's id and patches it
-                const url = `${SHEET_BEST_URL}/id/${encodeURIComponent(id)}`;
-
-                const updateResponse = await fetch(url, {
-                    method: 'PATCH',
+                const response = await fetch(`${API_BASE}/update-member`, {
+                    method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(updates)  // e.g. { status: "accepted" }
+                    // ✅ Identify member by email — always present, always unique
+                    body: JSON.stringify({ email, ...updates })
                 });
 
-                if (!updateResponse.ok) {
-                    const errorText = await updateResponse.text();
-                    console.error('Sheet.best error response:', updateResponse.status, errorText);
-                    throw new Error(`Sheet.best responded with ${updateResponse.status}: ${errorText}`);
+                const result = await response.json();
+
+                if (!response.ok) {
+                    console.error('Update failed:', result);
+                    throw new Error(result.error || `Server error ${response.status}`);
                 }
 
-                const result = await updateResponse.json();
                 console.log('Update result:', result);
-
-                if (!result || (Array.isArray(result) && result.length === 0)) {
-                    // Sheet.best returns [] when no row matched the filter
-                    showToast('Member not found — ID may not match sheet data.', 'error');
-                    return false;
-                }
-
                 return true;
             } catch (error) {
                 console.error('Update error:', error);
@@ -948,8 +938,9 @@
                 skills: document.getElementById('editSkills').value,
                 selectedImage: selectedImage
             };
-            
-            const success = await updateMemberDirect(currentMemberId, updates);
+
+            // ✅ Use email (stored on editingMemberData) as the stable identifier
+            const success = await updateMemberDirect(editingMemberData.email, updates);
             if (success) {
                 showToast('Member updated!', 'success');
                 closeEditModal();
@@ -967,8 +958,9 @@
                 status: status,
                 selectedImage: selectedImage
             };
-            
-            const success = await updateMemberDirect(currentMemberId, updates);
+
+            // ✅ Use email as the stable identifier
+            const success = await updateMemberDirect(editingMemberData.email, updates);
             if (success) {
                 showToast(`Member ${status}!`, 'success');
                 closeEditModal();
