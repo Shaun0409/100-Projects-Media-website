@@ -184,37 +184,41 @@
                         <li><i class="fa-regular fa-circle-check"></i> Brand Collaborations</li>
                     </ul>
                 </div>
-                <div class="community-form" id="signupForm">
-                    <h3>Become a Member</h3>
-                    <form id="membershipForm">
-                        <div class="form-group">
-                            <input type="text" id="memberName" placeholder="Full Name" required />
-                        </div>
-                        <div class="form-group">
-                            <input type="email" id="memberEmail" placeholder="Email Address" required />
-                        </div>
-                        <div class="form-group">
-                            <input type="text" id="memberRole" placeholder="Role/Title (e.g., Photographer, Writer, Brand Strategist)" required />
-                        </div>
-                        <div class="form-group">
-                            <textarea id="memberSkills" rows="2" placeholder="Creative Focus/Skillset (e.g., Fashion Photography, Brand Strategy)"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <input type="url" id="memberWebsite" placeholder="Website or Portfolio Link (optional)" />
-                        </div>
-                        <button type="submit" class="btn-primary full-width" id="submitBtn">
-                            <i class="fa-regular fa-paper-plane"></i> Become a Member
-                        </button>
-                    </form>
-                    <div id="formSuccess" style="display:none; text-align:center; padding:20px; color:var(--red);">
-                        <i class="fa-regular fa-circle-check" style="font-size:32px; display:block; margin-bottom:12px;"></i>
-                        <p>Thank you for joining! We'll be in touch soon.</p>
-                    </div>
-                    <div id="formFull" style="display:none; text-align:center; padding:20px;">
-                        <i class="fa-regular fa-circle-xmark" style="font-size:32px; display:block; margin-bottom:12px; color:var(--red);"></i>
-                        <p style="color:var(--text-secondary);">🎉 The community is full! We've reached 100 members.</p>
-                        <p style="color:var(--text-muted); font-size:14px;">Follow us on Instagram for updates on future opportunities.</p>
-                    </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== IMPACT NUMBERS ==================== -->
+    <section class="impact-section" id="impact">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-number">04</span>
+                <h2 class="section-title">Impact <span class="highlight-red">Numbers</span></h2>
+                <div class="section-divider">
+                    <span class="divider-line-short"></span>
+                    <span class="divider-dot"></span>
+                    <span class="divider-dot"></span>
+                    <span class="divider-dot"></span>
+                    <span class="divider-dot"></span>
+                    <span class="divider-line-short"></span>
+                </div>
+            </div>
+            <div class="impact-grid-home" id="impactGridHome">
+                <div class="impact-card-home">
+                    <span class="impact-number" id="homeMagazine">08</span>
+                    <span class="impact-label">Magazine Issues</span>
+                </div>
+                <div class="impact-card-home">
+                    <span class="impact-number" id="homeFeatures">100+</span>
+                    <span class="impact-label">Editorial Features</span>
+                </div>
+                <div class="impact-card-home">
+                    <span class="impact-number" id="homeCollaborations">50+</span>
+                    <span class="impact-label">Brand Collaborations</span>
+                </div>
+                <div class="impact-card-home">
+                    <span class="impact-number" id="homeReach">1M+</span>
+                    <span class="impact-label">Digital Reach</span>
                 </div>
             </div>
         </div>
@@ -621,6 +625,31 @@
             hubPage++;
             loadHubMembers(false);
         }
+
+                // ==========================================
+        // IMPACT NUMBERS
+        // ==========================================
+        function loadImpactNumbers() {
+            try {
+                const data = localStorage.getItem('impactNumbers');
+                if (data) {
+                    const parsed = JSON.parse(data);
+                    document.getElementById('homeMagazine').textContent = parsed.magazine || 8;
+                    document.getElementById('homeFeatures').textContent = parsed.features + (parsed.features > 9 ? '' : '+') || '100+';
+                    document.getElementById('homeCollaborations').textContent = parsed.collaborations + (parsed.collaborations > 9 ? '' : '+') || '50+';
+                    document.getElementById('homeReach').textContent = parsed.reach >= 1000000 ? (parsed.reach / 1000000).toFixed(1) + 'M+' : parsed.reach + '+';
+                }
+            } catch (e) {
+                // Default values already in HTML
+            }
+        }
+
+        // Call this in your DOMContentLoaded:
+        document.addEventListener('DOMContentLoaded', async function() {
+            // ... existing code ...
+            loadImpactNumbers(); // Add this line
+            // ... rest of code ...
+        });
 
         // ==========================================
         // SIGNUP MODAL

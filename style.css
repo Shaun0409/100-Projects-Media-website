@@ -1369,6 +1369,76 @@ section {
 }
 
 /* ==========================================
+   IMPACT NUMBERS (Homepage)
+   ========================================== */
+.impact-section {
+    background: var(--pure-white);
+    padding: 80px 0;
+}
+
+.impact-grid-home {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.impact-card-home {
+    background: var(--white);
+    border: 1px solid var(--gray-medium);
+    border-radius: var(--radius);
+    padding: 32px 20px;
+    text-align: center;
+    transition: var(--transition);
+}
+
+.impact-card-home:hover {
+    transform: translateY(-4px);
+    border-color: var(--red);
+    box-shadow: var(--shadow-red);
+}
+
+.impact-number {
+    display: block;
+    font-family: 'Playfair Display', serif;
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--red);
+    line-height: 1.1;
+}
+
+.impact-label {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 8px;
+    display: block;
+}
+
+@media (max-width: 820px) {
+    .impact-grid-home {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .impact-grid-home {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+    .impact-number {
+        font-size: 32px;
+    }
+    .impact-label {
+        font-size: 11px;
+    }
+    .impact-card-home {
+        padding: 20px 12px;
+    }
+}
+
+/* ==========================================
    FOOTER
    ========================================== */
 .footer {
