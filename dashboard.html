@@ -903,50 +903,24 @@
         }
 
         // ==========================================
-        // UPDATE MEMBER - DIRECT SHEET.BEST API
+        // UPDATE MEMBER - NETLIFY FUNCTION
         // ==========================================
         async function updateMember(id, updates) {
             try {
-                // First, get the member from Sheet.best
-                const getResponse = await fetch(SHEET_BEST_URL);
-                if (!getResponse.ok) {
-                    throw new Error('Failed to fetch members from Sheet.best');
-                }
-                const members = await getResponse.json();
+                const response = await fetch(`${API_BASE}/update-member`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id, ...updates })
+                });
                 
-                // Find the member
-                const member = members.find(m => m.id === id || m.id === parseInt(id));
-                if (!member) {
-                    showToast('Member not found in Sheet.best.', 'error');
+                const result = await response.json();
+                
+                if (result.success) {
+                    return true;
+                } else {
+                    showToast('Error: ' + (result.error || 'Unknown error'), 'error');
                     return false;
                 }
-                
-                // Apply updates
-                Object.keys(updates).forEach(key => {
-                    member[key] = updates[key];
-                });
-                
-                // Update in Sheet.best - try PUT first
-                let updateResponse = await fetch(`${SHEET_BEST_URL}/${member.id}`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(member)
-                });
-                
-                // If PUT fails, try POST
-                if (!updateResponse.ok) {
-                    updateResponse = await fetch(`${SHEET_BEST_URL}/${member.id}`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(member)
-                    });
-                }
-                
-                if (!updateResponse.ok) {
-                    throw new Error('Failed to update member in Sheet.best');
-                }
-                
-                return true;
             } catch (error) {
                 console.error('Update error:', error);
                 showToast('Error: ' + error.message, 'error');
