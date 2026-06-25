@@ -242,7 +242,6 @@
         }
         .add-partner-form .btn-primary { padding: 10px 24px; }
 
-        /* Impact Numbers */
         .impact-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -301,7 +300,6 @@
             justify-self: center;
         }
 
-        /* Member Edit Modal */
         .edit-modal {
             position: fixed;
             top: 0;
@@ -747,6 +745,7 @@
 
     <script>
         const API_BASE = '/.netlify/functions';
+        // ⚠️ REPLACE WITH YOUR ACTUAL SHEET.BEST URL
         const SHEET_BEST_URL = 'https://api.sheetbest.com/sheets/7fb06936-5f4f-4ca5-bb81-b4e8af870b57/tabs/Members';
         let currentMemberId = null;
         let currentFilter = 'all';
@@ -903,24 +902,67 @@
         }
 
         // ==========================================
-        // UPDATE MEMBER - NETLIFY FUNCTION
+        // UPDATE MEMBER - DIRECT SHEET.BEST API
         // ==========================================
-        async function updateMember(id, updates) {
+        async function updateMemberDirect(id, updates) {
             try {
-                const response = await fetch(`${API_BASE}/update-member`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ id, ...updates })
-                });
+                // Get the member from Sheet.best
+                const getResponse = await fetch(SHEET_BEST_URL);
+                if (!getResponse.ok) {
+                    throw new Error('Failed to fetch members from Sheet.best');
+                }
+                const members = await getResponse.json();
                 
-                const result = await response.json();
-                
-                if (result.success) {
-                    return true;
-                } else {
-                    showToast('Error: ' + (result.error || 'Unknown error'), 'error');
+                // Find the member
+                const member = members.find(m => m.id === id || m.id === parseInt(id));
+                if (!member) {
+                    showToast('Member not found in Sheet.best.', 'error');
                     return false;
                 }
+                
+                // Apply updates
+                Object.keys(updates).forEach(key => {
+                    member[key] = updates[key];
+                });
+                
+                // Update in Sheet.best - try PUT first
+                let updateResponse = await fetch(`${SHEET_BEST_URL}/${member.id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(member)
+                });
+                
+                // If PUT fails, try POST
+                if (!updateResponse.ok) {
+                    console.log('PUT failed, trying POST...');
+                    updateResponse = await fetch(`${SHEET_BEST_URL}/${member.id}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(member)
+                    });
+                }
+                
+                // If POST fails, try DELETE + POST (recreate)
+                if (!updateResponse.ok) {
+                    console.log('POST with ID failed, trying to delete and recreate...');
+                    // Delete the old row first
+                    await fetch(`${SHEET_BEST_URL}/${member.id}`, {
+                        method: 'DELETE'
+                    }).catch(() => {});
+                    
+                    // Add as new row
+                    updateResponse = await fetch(SHEET_BEST_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(member)
+                    });
+                }
+                
+                if (!updateResponse.ok) {
+                    throw new Error('Failed to update member in Sheet.best');
+                }
+                
+                return true;
             } catch (error) {
                 console.error('Update error:', error);
                 showToast('Error: ' + error.message, 'error');
@@ -939,7 +981,7 @@
                 selectedImage: selectedImage
             };
             
-            const success = await updateMember(currentMemberId, updates);
+            const success = await updateMemberDirect(currentMemberId, updates);
             if (success) {
                 showToast('Member updated!', 'success');
                 closeEditModal();
@@ -958,7 +1000,7 @@
                 selectedImage: selectedImage
             };
             
-            const success = await updateMember(currentMemberId, updates);
+            const success = await updateMemberDirect(currentMemberId, updates);
             if (success) {
                 showToast(`Member ${status}!`, 'success');
                 closeEditModal();
@@ -1192,7 +1234,10 @@
         });
 
         console.log('📊 100 HUB Dashboard loaded.');
+        console.log('ℹ️ Using direct Sheet.best API for member updates.');
+        console.log('🔗 Sheet.best URL:', SHEET_BEST_URL);
     </script>
+
 
 </body>
 </html>
