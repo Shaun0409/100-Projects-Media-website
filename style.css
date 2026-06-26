@@ -136,8 +136,9 @@ body {
     flex-shrink: 0;
 }
 .logo-img {
-    height: 30px;
+    height: 70px;
     width: auto;
+    display: block;
 }
 .logo-text {
     font-family: 'Playfair Display', serif;
@@ -258,9 +259,9 @@ section {
 }
 
 .hero-logo-img {
-    height: 120px;
+    height: 180px;
     width: auto;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .hero-title {
@@ -270,7 +271,7 @@ section {
 }
 .hero-word {
     display: block;
-    font-size: 72px;
+    font-size: 64px;
     font-weight: 600;
     color: var(--text-primary);
     letter-spacing: 8px;
@@ -1451,8 +1452,8 @@ section {
 
 @media (max-width: 1024px) {
     .container { padding: 0 32px; }
-    .hero-word { font-size: 56px; letter-spacing: 8px; }
-    .hero-logo-img { height: 90px; }
+    .hero-word { font-size: 48px; letter-spacing: 8px; }
+    .hero-logo-img { height: 140px; }
     .section-title { font-size: 38px; }
     .community-grid { grid-template-columns: 1fr; gap: 40px; }
     .contact-grid { grid-template-columns: 1fr; gap: 40px; }
@@ -1483,8 +1484,8 @@ section {
         white-space: nowrap;
     }
     .hero { min-height: auto; padding: 120px 0 60px; }
-    .hero-word { font-size: 42px; letter-spacing: 6px; }
-    .hero-logo-img { height: 70px; }
+    .hero-word { font-size: 36px; letter-spacing: 6px; }
+    .hero-logo-img { height: 120px; }
     .hero-scroll { display: none; }
     section { padding: 60px 0; }
     .section-title { font-size: 32px; }
@@ -1505,12 +1506,13 @@ section {
     }
     .work-text { font-size: 17px; }
     .signup-modal-content { padding: 24px; }
+    .logo-img { height: 60px; }
 }
 
 @media (max-width: 600px) {
     .container { padding: 0 16px; }
-    .hero-word { font-size: 32px; letter-spacing: 4px; }
-    .hero-logo-img { height: 56px; }
+    .hero-word { font-size: 28px; letter-spacing: 4px; }
+    .hero-logo-img { height: 100px; }
     .hero-actions { 
         flex-direction: column; 
         align-items: center; 
@@ -1563,12 +1565,14 @@ section {
     .contact-item { font-size: 13px; }
     .team-image { height: 220px; }
     .signup-modal-content { padding: 20px; }
+    .logo-img { height: 50px; }
+    .logo-text { font-size: 18px; }
 }
 
 @media (max-width: 420px) {
     .container { padding: 0 12px; }
-    .hero-word { font-size: 28px; letter-spacing: 3px; }
-    .hero-logo-img { height: 48px; }
+    .hero-word { font-size: 24px; letter-spacing: 3px; }
+    .hero-logo-img { height: 80px; }
     .section-title { font-size: 24px; }
     .feed-grid { 
         grid-template-columns: 1fr 1fr; 
@@ -1635,6 +1639,8 @@ section {
         padding: 12px 20px;
     }
     .signup-modal-content { padding: 16px; }
+    .logo-img { height: 40px; }
+    .logo-text { font-size: 16px; }
 }
 
 /* ==========================================
