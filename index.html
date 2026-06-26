@@ -419,18 +419,17 @@
         </div>
     </section>
 
-    <!-- ==================== SIGNUP MODAL ==================== -->
     <div class="signup-modal" id="signupModal">
         <div class="signup-modal-overlay" id="signupModalOverlay"></div>
         <div class="signup-modal-content">
             <button class="signup-modal-close" id="signupModalClose"><i class="fa-solid fa-xmark"></i></button>
-            <h2 style="font-family:'Playfair Display',serif; font-size:28px; margin-bottom:8px;">Become a Member</h2>
-            <p style="color:var(--text-muted); font-size:14px; margin-bottom:20px;">Join the 100 HUB creative community</p>
+            <h2 style="font-family:'Playfair Display',serif; font-size:28px; margin-bottom:8px;">Join the <span style="color:var(--red);">100 HUB</span></h2>
+            <p style="color:var(--text-muted); font-size:14px; margin-bottom:20px;">Apply to become a member of our creative community</p>
             <form id="signupModalForm">
                 <div class="form-group">
-                    <label>Professional Photo (3 images)</label>
+                    <label>Professional Photo <span style="color:var(--text-muted); font-weight:400;">(up to 3 images)</span></label>
                     <input type="file" id="memberPhotos" accept="image/*" multiple required />
-                    <small style="color:var(--text-muted); font-size:11px;">Upload up to 3 images (PNG, JPG, JPEG)</small>
+                    <small style="color:var(--text-muted); font-size:11px;">PNG, JPG or JPEG — we'll let you pick your best one</small>
                 </div>
                 <div class="form-group">
                     <input type="text" id="modalMemberName" placeholder="Full Name" required />
@@ -439,37 +438,39 @@
                     <input type="email" id="modalMemberEmail" placeholder="Email Address" required />
                 </div>
                 <div class="form-group">
-                    <input type="text" id="modalMemberRole" placeholder="Role/Title (e.g., Photographer, Writer, Brand Strategist)" required />
+                    <input type="text" id="modalMemberRole" placeholder="Role / Title  (e.g. Photographer, Writer, Brand Strategist)" required />
                 </div>
                 <div class="form-group">
-                    <textarea id="modalMemberSkills" rows="2" placeholder="Creative Focus/Skillset (e.g., Fashion Photography, Brand Strategy)"></textarea>
+                    <textarea id="modalMemberSkills" rows="2" placeholder="Creative Focus / Skillset  (e.g. Fashion Photography, Brand Strategy)"></textarea>
                 </div>
                 <div class="form-group">
                     <input type="url" id="modalMemberWebsite" placeholder="Website or Portfolio Link (optional)" />
                 </div>
-                <div class="form-group social-group">
-                    <label style="font-size:12px; color:var(--text-muted); margin-bottom:6px; display:block;">Social Media (optional)</label>
-                    <div style="display:flex; gap:8px;">
-                        <select id="modalSocialPlatform" style="padding:10px 12px; border:1px solid var(--gray-medium); border-radius:var(--radius-sm); font-size:14px; color:var(--text-primary); background:var(--white); min-width:140px; flex-shrink:0;">
-                            <option value="">Platform</option>
-                            <option value="instagram">Instagram</option>
-                            <option value="tiktok">TikTok</option>
-                            <option value="twitter">Twitter/X</option>
-                            <option value="linkedin">LinkedIn</option>
-                            <option value="youtube">YouTube</option>
-                            <option value="facebook">Facebook</option>
-                            <option value="behance">Behance</option>
-                            <option value="pinterest">Pinterest</option>
-                        </select>
-                        <input type="text" id="modalSocialHandle" placeholder="@yourhandle" style="flex:1;" />
-                    </div>
+
+                <!-- Social: dropdown THEN handle on separate line -->
+                <div class="form-group">
+                    <label style="font-size:12px; color:var(--text-muted); margin-bottom:8px; display:block;">Social Media <span style="font-weight:400;">(optional)</span></label>
+                    <select id="modalSocialPlatform" style="width:100%; padding:13px 16px; border:1px solid var(--gray-medium); border-radius:var(--radius-sm); font-size:14px; color:var(--text-primary); background:var(--white); margin-bottom:8px; appearance:none; cursor:pointer;">
+                        <option value="">Choose a platform...</option>
+                        <option value="instagram">Instagram</option>
+                        <option value="tiktok">TikTok</option>
+                        <option value="twitter">Twitter / X</option>
+                        <option value="linkedin">LinkedIn</option>
+                        <option value="youtube">YouTube</option>
+                        <option value="facebook">Facebook</option>
+                        <option value="behance">Behance</option>
+                        <option value="pinterest">Pinterest</option>
+                    </select>
+                    <input type="text" id="modalSocialHandle" placeholder="Your username / handle  e.g. @yourname" style="width:100%;" />
                 </div>
+
                 <button type="submit" class="btn-primary full-width" id="modalSubmitBtn">
                     <i class="fa-regular fa-paper-plane"></i> Submit Application
                 </button>
-                <div id="modalFormSuccess" style="display:none; text-align:center; padding:20px; color:var(--red);">
-                    <i class="fa-regular fa-circle-check" style="font-size:32px; display:block; margin-bottom:12px;"></i>
-                    <p>Thank you for joining! You will receive an email to let you know that you have been accepted as a member.</p>
+                <div id="modalFormSuccess" style="display:none; text-align:center; padding:28px 20px;">
+                    <i class="fa-regular fa-circle-check" style="font-size:40px; display:block; margin-bottom:16px; color:var(--red);"></i>
+                    <h3 style="font-family:'Playfair Display',serif; font-size:22px; margin-bottom:10px; color:var(--text-primary);">Thank you for joining!</h3>
+                    <p style="color:var(--text-secondary); font-size:14px; line-height:1.7;">We've received your application and we'll be in touch soon. You'll hear from us once your profile has been reviewed.</p>
                 </div>
             </form>
         </div>
