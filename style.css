@@ -185,18 +185,23 @@ body {
 
 .nav-toggle {
     display: none;
-    background: none;
+    background: var(--red);
     border: none;
     cursor: pointer;
-    padding: 4px;
+    padding: 8px 10px;
     z-index: 100;
     flex-shrink: 0;
+    border-radius: 8px;
+    transition: var(--transition-fast);
+}
+.nav-toggle:hover {
+    background: var(--red-dark);
 }
 .hamburger {
     display: block;
-    width: 24px;
+    width: 22px;
     height: 2px;
-    background-color: #ff0000;
+    background: var(--white);
     position: relative;
     transition: var(--transition-fast);
 }
@@ -204,16 +209,16 @@ body {
 .hamburger::after {
     content: '';
     position: absolute;
-    width: 24px;
+    width: 22px;
     height: 2px;
-    background: var(--text-primary);
+    background: var(--white);
     transition: var(--transition-fast);
 }
 .hamburger::before {
-    top: -8px;
+    top: -7px;
 }
 .hamburger::after {
-    bottom: -8px;
+    bottom: -7px;
 }
 .nav-toggle.active .hamburger {
     background: transparent;
@@ -419,48 +424,6 @@ section {
     justify-content: center;
 }
 
-.hero-scroll {
-    position: absolute;
-    bottom: 40px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    color: var(--text-muted);
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    z-index: 2;
-    opacity: 0.6;
-    transition: opacity 0.4s ease;
-}
-.hero-scroll:hover {
-    opacity: 1;
-}
-
-.scroll-line {
-    width: 1px;
-    height: 40px;
-    background: var(--gray-medium);
-    position: relative;
-    overflow: hidden;
-}
-.scroll-line::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 100%;
-    background: var(--red);
-    animation: scrollLine 2.2s ease-in-out infinite;
-}
-@keyframes scrollLine {
-    0% { transform: translateY(-100%); }
-    100% { transform: translateY(100%); }
-}
 
 /* ==========================================
    ABOUT
@@ -921,13 +884,6 @@ section {
     flex-shrink: 0;
 }
 
-.community-form h3 {
-    font-family: 'Playfair Display', serif;
-    font-size: 24px;
-    font-weight: 600;
-    color: var(--text-primary);
-    margin-bottom: 20px;
-}
 
 .form-group {
     margin-bottom: 16px;
@@ -1013,9 +969,11 @@ section {
     color: var(--text-primary);
     margin-bottom: 2px;
 }
-.hub-date {
+.hub-role-tag {
     font-size: 11px;
-    color: var(--text-muted);
+    color: var(--red);
+    font-weight: 500;
+    opacity: 0.85;
 }
 
 .hub-loading,
@@ -1513,7 +1471,7 @@ section {
         left: 0;
         right: 0;
         bottom: 0;
-        background: rgba(255, 255, 255, 0.98);
+        background: var(--red);
         flex-direction: column;
         justify-content: center;
         align-items: center;
@@ -1526,12 +1484,18 @@ section {
         font-size: 20px; 
         letter-spacing: 2px;
         white-space: normal;
+        color: var(--white);
+    }
+    .nav-links a::after {
+        background: var(--white);
+    }
+    .nav-links a:hover {
+        color: rgba(255,255,255,0.75);
     }
     .nav-toggle { display: block; }
     .hero { min-height: auto; padding: 120px 0 60px; }
     .hero-word { font-size: 42px; letter-spacing: 6px; }
     .hero-logo-img { height: 70px; }
-    .hero-scroll { display: none; }
     section { padding: 60px 0; }
     .section-title { font-size: 32px; }
     .feed-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
@@ -1690,7 +1654,6 @@ section {
     .global-video-bg,
     .navbar,
     .nav-toggle,
-    .hero-scroll,
     .post-modal,
     #postIdTool,
     .signup-modal {
