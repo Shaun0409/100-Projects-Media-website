@@ -1,7 +1,7 @@
 // netlify/functions/media-kit.js
 // Manages media kit URL via Sheet.best
 
-// ⚠️ REPLACE WITH YOUR SHEET.BEST URL
+
 const SHEET_BEST_API = 'https://api.sheetbest.com/sheets/7fb06936-5f4f-4ca5-bb81-b4e8af870b57/tabs/MediaKit';
 
 exports.handler = async function(event, context) {
